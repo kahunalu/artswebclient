@@ -3,29 +3,32 @@
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.11.1.
 
+## Set Up
+	
+First follow the installation process described on this page for the required packages
+
+	http://yeoman.io/codelab/setup.html
+
+Once the requirements are met run `bower install` from the project directory
+this should install webclient requirements
+
+After this, run `npm install` from the project directory
+this should install additional webclient requirements. Grab a coffee this will take a while.
+
+Once this has finished the project will allow
+
 ## Build & development
 
-Run `grunt` for building and `grunt serve` for preview.
+Run `grunt serve` to start webclient in browser
+	
+Run `grunt --force` to build dist package
+	
 
 ## Testing
 
 Running `grunt test` will run the unit tests with karma.
 
-
-For the Web Client I followed these instructions:
-http://yeoman.io/codelab/setup.html
+###Notes
 
 This is the project structure and explaination:
-http://yeoman.io/codelab/review-generated-files.html 
-
-Requirements to work on Web Client:
-1.  On your local machine:
--   npm (which comes bundled with Node) v2.1.0+
--   Node.js v0.10.x+
--   Git
-
-Starting the server:
-1.  Navigate to the folder “artswebclient-master”
-2.  Type "grunt --force" to build
-3.  Type “grunt serve” to run
-
+http://yeoman.io/codelab/review-generated-files.html
