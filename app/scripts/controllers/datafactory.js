@@ -1,6 +1,6 @@
 'use strict';
 /*
-	Datafactory will be a wrapper which handles data requests 
+	Datafactory will be a wrapper which handles data requests
 
 	Use the utils functionality to make the request calls
 */
@@ -12,9 +12,9 @@ angular.module('artswebclientMasterApp')
             var url = '<REPLACE WITH SERVER ENDPOINT>';
 
             var body = {
-            	"type":type,
-            	"key":key
-            }
+            	'type':type,
+            	'key':key
+            };
 
             return utilsFactory.postRequest(url, body);
         };

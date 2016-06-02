@@ -1,26 +1,29 @@
 <!doctype html>
 <html class="no-js">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap-css/css/bootstrap.min.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-  </head>
-  <body ng-app="artswebclientMasterApp">
-    <!--[if lt IE 7]>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/bootstrap-css/css/bootstrap.min.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+</head>
+
+<body ng-app="artswebclientMasterApp" ng-controller="AppController" nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter">
+  <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
+  <!-- Add your site or application content here -->
+  <div class="container">
     <div class="header">
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
@@ -48,49 +51,113 @@
       </div>
     </div>
 
-    <div class="container">
-    <div ng-view=""></div>
+    <ul class="nav nav-pills nav-justified">
+      <li><a href="#" ng-click="text=false" class="btn btn-primary">File</a></li>
+      <li><a href="#" ng-click="text=true" class="btn btn-primary">Text</a></li>
+    </ul>
+
+    <div ng-hide="text">
+
+      <h3>File Upload</h3>
+
+      <div ng-show="uploader.isHTML5">
+        <!-- 3. nv-file-over uploader="link" over-class="className" -->
+        <div class="well my-drop-zone" nv-file-over="" uploader="uploader" style="height:25vh;">
+          <h3 style="text-align: center;">
+                                    Drag and drop file here...
+                                </h3>
+        </div>
+      </div>
+
+      <div>
+        ...or select file from your computer.
+        <input type="file" nv-file-select="" uploader="uploader" />
+      </div>
+
     </div>
 
-    <div class="footer">
-      <div class="container">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+    <div ng-show="text">
+
+      <h3>
+                            Text Upload
+                        </h3>
+
+      <div>
+        <input id="usr" type="text" class="form-control" placeholder="Type something!" ng-click="" />
+      </div>
+
+    </div>
+
+    <br/>
+
+    <div>
+      <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+        <span class="glyphicon glyphicon-upload"></span> Upload
+      </button>
+    </div>
+
+    <br/>
+
+    <div>
+      Upload progress:
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
       </div>
     </div>
 
+    <div id="anchor-div" style="visibility: hidden;">
+      <h3>
+                            Your anchor tag
+                        </h3>
+    </div>
+  </div>
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-     <script>
-       !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
-       (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
-       r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
-       }(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  <div class="footer">
+    <div class="container">
+      <p>SENG 499 Group 2</p>
+    </div>
+  </div>
 
-       ga('create', 'UA-XXXXX-X');
-       ga('send', 'pageview');
-    </script>
+  </div>
 
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/bootstrap-css/js/bootstrap.min.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+  <script>
+    ! function(A, n, g, u, l, a, r) {
+      A.GoogleAnalyticsObject = l, A[l] = A[l] || function() {
+          (A[l].q = A[l].q || []).push(arguments)
+        }, A[l].l = +new Date, a = n.createElement(g),
+        r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+    }(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
-        <script src="scripts/controllers/utils.js"></script>
-        <script src="scripts/controllers/datafactory.js"></script>
-        <!-- endbuild -->
+    ga('create', 'UA-XXXXX-X');
+    ga('send', 'pageview');
+  </script>
+
+
+  <!-- build:js(.) scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-touch/angular-touch.js"></script>
+  <script src="bower_components/bootstrap-css/js/bootstrap.min.js"></script>
+  <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers/main.js"></script>
+  <script src="scripts/controllers/about.js"></script>
+  <script src="scripts/controllers/utils.js"></script>
+  <script src="scripts/controllers/datafactory.js"></script>
+  <script src="scripts/controllers/file-uploader.js"></script>
+  <!-- endbuild -->
 </body>
+
 </html>
