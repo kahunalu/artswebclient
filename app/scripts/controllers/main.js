@@ -10,17 +10,15 @@
 var artsWebApp = angular.module('artswebclientMasterApp');
 
 artsWebApp.controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-        'HTML5 Boilerplate',
-        'AngularJS',
-        'Karma'
-    ];
+
+    $scope.textContent = null;
+    $scope.imageContent = null;
+
     $scope.createState	= true;
     $scope.contextState	= false;
     $scope.contentState	= false;
     $scope.adjustState	= false;
     $scope.confirmState	= false;
-
 
     $scope.switchState = function(){
     	if($scope.createState){
@@ -60,9 +58,12 @@ artsWebApp.controller('contextState', function ($scope) {
 });
 
 artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope, FileUploader) {
+    $scope.incomplete       = true;
     $scope.imageSelected    = true;
     $scope.textSelected     = false;
-    $scope.incomplete       = true;
+    $scope.imageUploaded    = false;
+
+    $scope.textValue = null;
 
     $scope.switchSelected   = function(){
         if($scope.imageSelected){
@@ -79,13 +80,21 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         queueLimit: 1,
     });
 
-    // CALLBACKS
-
     uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
         console.info('onWhenAddingFileFailed', item, filter, options);
     };
-    uploader.onAfterAddingFile = function() {
+
+    uploader.onAfterAddingFile = function(item) {
         $scope.incomplete = false;
+        $scope.imageUploaded = true;
+        $scope.$parent.imageContent = item;
+        $scope.$parent.textContent = null;
+    };
+
+    $scope.setText = function(text){
+        $scope.incomplete = false;
+        $scope.$parent.imageContent = null;
+        $scope.$parent.textContent = text;
     };
 
 }]);
