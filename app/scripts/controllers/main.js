@@ -63,6 +63,17 @@ artsWebApp.controller('contentState', function ($scope) {
     $scope.imageSelected    = true;
     $scope.textSelected     = false;
     $scope.incomplete       = true;
+
+    $scope.switchSelected   = function(){
+        if($scope.imageSelected){
+            $scope.imageSelected    = false;
+            $scope.textSelected     = true;
+        }else{
+            $scope.imageSelected    = true;
+            $scope.textSelected     = false;
+        }
+    }
+
 });
 
 artsWebApp.controller('adjustState', function ($scope) {
