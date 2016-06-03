@@ -17,16 +17,16 @@ artsWebApp.controller('MainCtrl', function ($scope) {
     ];
     $scope.createState	= false;
     $scope.contextState	= false;
-    $scope.contentState	= true;
+    $scope.contentState	= false;
     $scope.adjustState	= false;
-    $scope.confirmState	= false;
+    $scope.confirmState	= true;
 
 
     $scope.switchState = function(){
     	if($scope.createState){
  			
  			$scope.createState	= false;
- 			$scope.contextState	= true;
+ 			$scope.contentState	= true;
 
     	} else if($scope.contextState){
     		
@@ -72,8 +72,7 @@ artsWebApp.controller('contentState', function ($scope) {
             $scope.imageSelected    = true;
             $scope.textSelected     = false;
         }
-    }
-
+    };
 });
 
 artsWebApp.controller('adjustState', function ($scope) {

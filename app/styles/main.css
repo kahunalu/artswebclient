@@ -39,11 +39,10 @@ body {
   margin-top: 16px;
 }
 
-<<<<<<< Updated upstream
 .pageTitle{
   text-align: center;
 }
-=======
+
 .centerBlock {
     display: block;
     margin-left: auto;
@@ -54,4 +53,3 @@ body {
  .centerHeader {
     text-align: center;
  }
->>>>>>> Stashed changes
