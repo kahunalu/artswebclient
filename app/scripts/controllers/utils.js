@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('moodfeedappApp')
+angular.module('artswebclientMasterApp')
     .factory('utilsFactory', function($http, $q) {
         var factory = {};
 
