@@ -13,6 +13,7 @@ artsWebApp.controller('MainCtrl', function ($scope) {
 
     $scope.textContent = null;
     $scope.imageContent = null;
+    $scope.key = null;
 
     $scope.createState	= true;
     $scope.contextState	= false;
@@ -113,7 +114,20 @@ artsWebApp.controller('adjustState', function ($scope) {
 });
 
 artsWebApp.controller('confirmState', function ($scope) {
+
+    $scope.key = null;
+
     $scope.printQR = function(){
         $('#QRCode').get(0).contentWindow.print();
     };
+
+    $scope.$watch('confirmState', function(){
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        }
+
+        if($scope.$parent.confirmState){
+            $scope.key = s4()+s4()+s4();
+        }
+    });
 });
