@@ -26,15 +26,35 @@
     </div>
     
     <div class="createPage row" ng-controller="contentState" ng-show="contentState">
-        <div class="col-md-4">
-            <button type="button" ng-click="switchState()" class="btn btn-default">
-                Done
-            </button>
+        <div class="row">
+            <h1>
+                Upload Your Content <span class="glyphicon glyphicon-sunglasses"></span>
+            <h1>
         </div>
-        <div class="col-md-8">
-            <p>
-                {{test}}
-            </p>
+
+        <div class="row">
+            <div class="btn-group btn-group-justified" role="group">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary" ng-click="switchSelected" ng-disabled="imageSelected">
+                        Image <span class="glyphicon glyphicon-picture"></span>
+                    </button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary" ng-click="switchSelected()" ng-disabled="textSelected">
+                        Text <span class="glyphicon glyphicon-send"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="contentDZ jumbotron row">
+            drag and drop content
+        </div>
+        
+        <div class="nextButton row">
+            <button type="button" class="btn btn-success pull-right" ng-click="switchState()" ng-disabled="incomplete">
+                Next <span class="glyphicon glyphicon-chevron-right"></span>
+            </button>
         </div>
     </div>
     
