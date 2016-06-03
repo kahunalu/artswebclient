@@ -19,32 +19,32 @@ artsWebApp.controller('MainCtrl', function ($scope) {
     $scope.contextState	= false;
     $scope.contentState	= false;
     $scope.adjustState	= false;
-    $scope.confirmState	= true;
+    $scope.confirmState	= false;
 
 
     $scope.switchState = function(){
     	if($scope.createState){
- 			
+
  			$scope.createState	= false;
  			$scope.contentState	= true;
 
     	} else if($scope.contextState){
-    		
+
  			$scope.contextState	= false;
     		$scope.contentState	= true;
-    	
+
     	} else if($scope.contentState){
- 			
+
  			$scope.contentState	= false;
-			$scope.adjustState	= true;
-    	
+			$scope.confirmState	= true;
+
     	} else if($scope.adjustState){
-    		
+
     		$scope.adjustState	= false;
  			$scope.confirmState	= true;
-    	
+
     	} else if($scope.confirmState){
-    		
+
     		$scope.confirmState	= false;
  			$scope.createState	= true;
     	}
@@ -59,7 +59,7 @@ artsWebApp.controller('contextState', function ($scope) {
     $scope.test = 'test string in contextState';
 });
 
-artsWebApp.controller('contentState', function ($scope) {
+artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope, FileUploader) {
     $scope.imageSelected    = true;
     $scope.textSelected     = false;
     $scope.incomplete       = true;
@@ -73,7 +73,22 @@ artsWebApp.controller('contentState', function ($scope) {
             $scope.textSelected     = false;
         }
     };
-});
+
+    var uploader = $scope.uploader = new FileUploader({
+        url: '<REPLACE WITH SERVER ENDPOINT>',
+        queueLimit: 1,
+    });
+
+    // CALLBACKS
+
+    uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+        console.info('onWhenAddingFileFailed', item, filter, options);
+    };
+    uploader.onAfterAddingFile = function() {
+        $scope.incomplete = false;
+    };
+
+}]);
 
 artsWebApp.controller('adjustState', function ($scope) {
     $scope.test = 'test string in adjustState';
@@ -82,4 +97,3 @@ artsWebApp.controller('adjustState', function ($scope) {
 artsWebApp.controller('confirmState', function ($scope) {
     $scope.test = 'test string in confirmState';
 });
-

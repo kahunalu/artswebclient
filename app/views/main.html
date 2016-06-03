@@ -1,6 +1,6 @@
 <div class="pageWrapper" ng-controller="MainCtrl">
     <div class="createPage row" ng-controller="createState" ng-show="createState">
-        <div> 
+        <div>
             <h1 class="centerHeader"> Augmented Reality Tagging System </h1>
             <img class="centerBlock" src="/images/logo.png">
         </div>
@@ -10,7 +10,7 @@
             </button>
         </div>
     </div>
-    
+
     <div class="createPage row" ng-controller="contextState" ng-show="contextState" >
         <div class="col-md-4">
             <button type="button" ng-click="switchState()" class="btn btn-default">
@@ -23,8 +23,8 @@
             </p>
         </div>
     </div>
-    
-    <div class="createPage row" ng-controller="contentState" ng-show="contentState">
+
+    <div class="createPage row" ng-controller="contentState" ng-show="contentState" nv-file-drop="" uploader="uploader">
         <div class="pageTitle row">
             <h1>
                 Upload Your Content <span class="glyphicon glyphicon-sunglasses"></span>
@@ -46,10 +46,14 @@
             </div>
         </div>
 
-        <div class="contentDZ jumbotron row" ng-show="imageSelected">
-            drag and drop content
+        <div class="contentDZ well row" ng-show="imageSelected">
+            <div class="well my-drop-zone" nv-file-over="" uploader="uploader" style="height:25vh;">
+                <h3 style="text-align: center;">
+                    Drag and drop file here
+                </h3>
+            </div>
         </div>
-        
+
         <div class="contentDZ jumbotron row" ng-show="textSelected">
             Text content
         </div>
@@ -60,7 +64,7 @@
             </button>
         </div>
     </div>
-    
+
     <div class="createPage row" ng-controller="adjustState" ng-show="adjustState">
         <div class="col-md-4">
             <button type="button" ng-click="switchState()" class="btn btn-default">
