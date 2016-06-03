@@ -90,22 +90,20 @@
     <div class="createPage row" ng-controller="confirmState" ng-show="confirmState">
         <div class="pageTitle row">
             <h1>
-                Confirm and Print Your Anchor Tag <span class="glyphicon glyphicon-thumbs-up"></span>
+                Download Your Anchor Tag <span class="glyphicon glyphicon-thumbs-up"></span>
             <h1>
         </div>
 
         <div class="jumbotron row">
             <div class="contentPreview col-md-8">
-                Content
+                <p>{{userContent}}</p>
             </div>
-            <div class="QRPreview col-md-4">
+            <div class="col-md-4">
                 <div class="row">
-                    <iframe class="shrinkImage" id="QRCode" src="/images/QR.png"></iframe>
                 </div>
-                <div class="row">
-                    <button type="button" ng-click="printQR()" class="btn btn-primary col-md-12">
-                        Print <span class="glyphicon glyphicon-glyphicon-print"></span>
-                    </button>
+                <div class="QRPreview row">
+                    <qrcode version="2" error-correction-level="M" size="300" data="{{key}}" download></qrcode>
+                    <h4>Click Anchor Tag to Download <span class="glyphicon glyphicon-download"></span></h4>
                 </div>
             </div>
         </div>
