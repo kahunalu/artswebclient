@@ -97,6 +97,15 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         $scope.$parent.textContent = text;
     };
 
+    $scope.resetValues = function(){
+        $scope.incomplete       = true;
+        $scope.imageSelected    = true;
+        $scope.textSelected     = false;
+        $scope.imageUploaded    = false;
+
+        $scope.textValue = null;
+    };
+
 }]);
 
 artsWebApp.controller('adjustState', function ($scope) {
@@ -105,6 +114,6 @@ artsWebApp.controller('adjustState', function ($scope) {
 
 artsWebApp.controller('confirmState', function ($scope) {
     $scope.printQR = function(){
-        $("#QRCode").get(0).contentWindow.print();
+        $('#QRCode').get(0).contentWindow.print();
     };
 });
