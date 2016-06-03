@@ -15,9 +15,9 @@ artsWebApp.controller('MainCtrl', function ($scope) {
         'AngularJS',
         'Karma'
     ];
-    $scope.createState	= false;
+    $scope.createState	= true;
     $scope.contextState	= false;
-    $scope.contentState	= true;
+    $scope.contentState	= false;
     $scope.adjustState	= false;
     $scope.confirmState	= false;
 
@@ -26,7 +26,7 @@ artsWebApp.controller('MainCtrl', function ($scope) {
     	if($scope.createState){
  			
  			$scope.createState	= false;
- 			$scope.contextState	= true;
+ 			$scope.contentState	= true;
 
     	} else if($scope.contextState){
     		
