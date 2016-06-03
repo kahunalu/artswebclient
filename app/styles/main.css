@@ -1,46 +1,46 @@
 .browsehappy {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
 }
 
 body {
-  padding: 0;
+    padding: 0;
 }
 
 /* Custom page header */
 .header {
-  border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 10px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 10px;
 }
 
 /* Make the masthead heading the same height as the navigation */
 .header h3 {
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 40px;
-  padding-bottom: 19px;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
 }
 
 /* Custom page footer */
 .footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #e5e5e5;
+    padding-top: 19px;
+    color: #777;
+    border-top: 1px solid #e5e5e5;
 }
 
 .container-narrow > hr {
-  margin: 30px 0;
+    margin: 30px 0;
 }
 
 .pageWrapper{
-  margin-bottom: 16px;
-  margin-top: 16px;
+    margin-bottom: 16px;
+    margin-top: 16px;
 }
 
 .pageTitle{
-  text-align: center;
+    text-align: center;
 }
 
 .centerBlock {
@@ -53,3 +53,12 @@ body {
  .centerHeader {
     text-align: center;
  }
+
+.shrinkImage{
+    width: 305px;
+    border: none;
+    height: 305px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
