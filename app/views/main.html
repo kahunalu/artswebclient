@@ -47,10 +47,14 @@
         </div>
 
         <div class="contentDZ well row" ng-show="imageSelected">
-            <div class="well my-drop-zone" nv-file-over="" uploader="uploader" style="height:25vh;" ng-show="!imageUploaded">
+            <div ng-show="uploader.isHTML5 && !imageUploaded" class="well" nv-file-over="" uploader="uploader" style="height:25vh;">
                 <h3 style="text-align: center;">
                     Drag and drop file here
                 </h3>
+            </div>
+            <div ng-show="!uploader.isHTML5 && !imageUploaded">
+                <h3>Select file from your computer</h3>
+                <input type="file" nv-file-select="" uploader="uploader" />
             </div>
             <div class="imagePreview" ng-show="imageUploaded">
                 <h3 style="text-align: center;">

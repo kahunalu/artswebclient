@@ -78,11 +78,11 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
 
     var uploader = $scope.uploader = new FileUploader({
         url: '<REPLACE WITH SERVER ENDPOINT>',
-        queueLimit: 1,
+        queueLimit: 1
     });
 
-    uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-        console.info('onWhenAddingFileFailed', item, filter, options);
+    uploader.onWhenAddingFileFailed = function() {
+        console.log('UPLOAD FAILURE');
     };
 
     uploader.onAfterAddingFile = function(item) {
