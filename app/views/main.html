@@ -1,14 +1,13 @@
 <div class="pageWrapper" ng-controller="MainCtrl">
     <div class="createPage row" ng-controller="createState" ng-show="createState">
-        <div class="col-md-4">
-            <button type="button" ng-click="switchState()" class="btn btn-default">
-                Done
-            </button>
+        <div> 
+            <h1 class="centerHeader"> Augmented Reality Tagging System </h1>
+            <img class="centerBlock" src="/images/logo.png">
         </div>
-        <div class="col-md-8">
-            <p>
-                {{test}}
-            </p>
+        <div class="row text-center">
+            <button type="button" ng-click="switchState()" class="btn btn-success">
+                Create
+            </button>
         </div>
     </div>
     
