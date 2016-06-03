@@ -80,6 +80,14 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         queueLimit: 1
     });
 
+    uploader.filters.push({
+        name: 'imageFilter',
+        fn: function(item) {
+            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+        }
+    });
+
     uploader.onWhenAddingFileFailed = function() {
         console.log('UPLOAD FAILURE');
     };
@@ -89,12 +97,27 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         $scope.imageUploaded = true;
         $scope.$parent.imageContent = item;
         $scope.$parent.textContent = null;
+
+        var reader = new FileReader();
+
+        reader.onload = (function(theFile) {
+            return function(e) {
+                var span = document.createElement('span');
+                span.innerHTML = ['<img class="image-preview" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+            document.getElementById('imagePreview').insertBefore(span, null);
+            };
+        })(item._file);
+
+      reader.readAsDataURL(item._file);
     };
 
     $scope.setText = function(text){
         $scope.incomplete = false;
         $scope.$parent.imageContent = null;
         $scope.$parent.textContent = text;
+        $scope.imageUploaded = false;
+        uploader.clearQueue();
     };
 
     $scope.resetValues = function(){
@@ -104,6 +127,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         $scope.imageUploaded    = false;
 
         $scope.textValue = null;
+        uploader.clearQueue();
     };
 
 }]);
