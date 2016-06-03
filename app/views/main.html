@@ -71,7 +71,7 @@
         </div>
 
         <div class="nextButton row">
-            <button type="button" class="btn btn-success pull-right" ng-click="switchState(); resetValues()" ng-disabled="incomplete || !textValue">
+            <button type="button" class="btn btn-success pull-right" ng-click="switchState(); resetValues()" ng-disabled="incomplete">
                 Next <span class="glyphicon glyphicon-chevron-right"></span>
             </button>
         </div>
@@ -99,7 +99,7 @@
 
         <div class="jumbotron row">
             <div class="contentPreview col-md-8">
-                Content
+                <p>{{userContent}}</p>
             </div>
             <div class="col-md-4">
                 <div class="row">

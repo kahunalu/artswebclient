@@ -116,6 +116,8 @@ artsWebApp.controller('adjustState', function ($scope) {
 artsWebApp.controller('confirmState', function ($scope) {
 
     $scope.key = null;
+    $scope.userContent = null;
+    $scope.contentType = null;
 
     $scope.printQR = function(){
         $('#QRCode').get(0).contentWindow.print();
@@ -128,6 +130,12 @@ artsWebApp.controller('confirmState', function ($scope) {
 
         if($scope.$parent.confirmState){
             $scope.key = s4()+s4()+s4();
+            if($scope.$parent.textContent !== null ){
+                    $scope.userContent = $scope.$parent.textContent;
+                    $scope.contentType = 'text';
+            }else{
+                    // Todo
+            }
         }
     });
 });
