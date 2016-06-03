@@ -31,6 +31,9 @@ module.exports = function(config) {
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/bootstrap-css/js/bootstrap.min.js',
       'bower_components/angular-file-upload/dist/angular-file-upload.min.js',
+      'bower_components/qrcode-generator/js/qrcode.js',
+      'bower_components/qrcode-generator/js/qrcode_UTF8.js',
+      'bower_components/angular-qrcode/angular-qrcode.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

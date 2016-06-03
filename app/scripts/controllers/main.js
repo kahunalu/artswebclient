@@ -70,3 +70,4 @@ artsWebApp.controller('adjustState', function ($scope) {
 artsWebApp.controller('confirmState', function ($scope) {
     $scope.test = 'test string in confirmState';
 });
+
