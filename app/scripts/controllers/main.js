@@ -105,10 +105,9 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
 
         $scope.$parent.reader.onload = (function(theFile) {
             return function(e) {
-                var span = document.createElement('span');
-                span.innerHTML = ['<img class="image-preview" src="', e.target.result,
-                                    '" title="', escape(theFile.name), '"/>'].join('');
-                document.getElementById('imagePreview').insertBefore(span, null);
+                var span = ['<span>','<img class="image-preview" src="', e.target.result,
+                                    '" title="', escape(theFile.name), '"/>','</span>'].join('');
+                document.getElementById('imagePreview').innerHTML = span;
             };
         })($scope.$parent.imageContent._file);
 
@@ -164,10 +163,9 @@ artsWebApp.controller('confirmState', function ($scope) {
 
                 $scope.$parent.reader.onload = (function(theFile) {
                     return function(e) {
-                        var span = document.createElement('span');
-                        span.innerHTML = ['<img class="image-preview" src="', e.target.result,
-                                            '" title="', escape(theFile.name), '"/>'].join('');
-                        document.getElementById('imageFinal').insertBefore(span, null);
+                        var span = ['<span>','<img class="image-preview" src="', e.target.result,
+                                            '" title="', escape(theFile.name), '"/>','</span>'].join('');
+                        document.getElementById('imageFinal').innerHTML = span;
                     };
                 })($scope.$parent.imageContent._file);
 
@@ -179,7 +177,7 @@ artsWebApp.controller('confirmState', function ($scope) {
             'key' : $scope.$parent.key,
             'content' : $scope.userContent,
             'contentType' : $scope.contentType
-        }
+        };Z
         // Todo, Ajax call
     });
 });
