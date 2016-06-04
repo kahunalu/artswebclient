@@ -144,7 +144,7 @@ artsWebApp.controller('confirmState', function ($scope) {
     $scope.contentType = null;
 
     $scope.printQR = function(){
-        $('#QRCode').get(0).contentWindow.print();
+        document.getElementById('QRCode').contentWindow.print();
     };
 
     $scope.$watch('confirmState', function(){
@@ -161,5 +161,12 @@ artsWebApp.controller('confirmState', function ($scope) {
                     // Todo
             }
         }
+
+        var QRData = {
+            'key' : $scope.$parent.key,
+            'content' : $scope.userContent,
+            'contentType' : $scope.contentType
+        }
+        // Todo, Ajax call
     });
 });
