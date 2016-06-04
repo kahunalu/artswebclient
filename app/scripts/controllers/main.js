@@ -11,9 +11,11 @@ var artsWebApp = angular.module('artswebclientMasterApp');
 
 artsWebApp.controller('MainCtrl', function ($scope) {
 
-    $scope.textContent = null;
+    $scope.textContent  = null;
     $scope.imageContent = null;
-    $scope.key = null;
+    $scope.key          = null;
+
+    $scope.reader       = null;
 
     $scope.createState	= true;
     $scope.contextState	= false;
@@ -99,18 +101,18 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         $scope.$parent.imageContent = item;
         $scope.$parent.textContent = null;
 
-        var reader = new FileReader();
+        $scope.$parent.reader = new FileReader();
 
-        reader.onload = (function(theFile) {
+        $scope.$parent.reader.onload = (function(theFile) {
             return function(e) {
                 var span = document.createElement('span');
                 span.innerHTML = ['<img class="image-preview" src="', e.target.result,
-                            '" title="', escape(theFile.name), '"/>'].join('');
-            document.getElementById('imagePreview').insertBefore(span, null);
+                                    '" title="', escape(theFile.name), '"/>'].join('');
+                document.getElementById('imagePreview').insertBefore(span, null);
             };
-        })(item._file);
+        })($scope.$parent.imageContent._file);
 
-      reader.readAsDataURL(item._file);
+        $scope.$parent.reader.readAsDataURL($scope.$parent.imageContent._file);
     };
 
     $scope.setText = function(text){
@@ -155,10 +157,21 @@ artsWebApp.controller('confirmState', function ($scope) {
         if($scope.$parent.confirmState){
             $scope.key = s4()+s4()+s4();
             if($scope.$parent.textContent !== null ){
-                    $scope.userContent = $scope.$parent.textContent;
-                    $scope.contentType = 'text';
+                $scope.userContent = $scope.$parent.textContent;
+                $scope.contentType = 'text';
             }else{
-                    // Todo
+                $scope.$parent.reader = new FileReader();
+
+                $scope.$parent.reader.onload = (function(theFile) {
+                    return function(e) {
+                        var span = document.createElement('span');
+                        span.innerHTML = ['<img class="image-preview" src="', e.target.result,
+                                            '" title="', escape(theFile.name), '"/>'].join('');
+                        document.getElementById('imagePreview').insertBefore(span, null);
+                    };
+                })($scope.$parent.imageContent._file);
+
+                $scope.$parent.reader.readAsDataURL($scope.$parent.imageContent._file);
             }
         }
     });
