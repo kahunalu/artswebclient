@@ -159,6 +159,8 @@ artsWebApp.controller('confirmState', function ($scope) {
                 $scope.userContent = $scope.$parent.textContent;
                 $scope.contentType = 'text';
             }else{
+                $scope.contentType = 'image';
+
                 $scope.$parent.reader = new FileReader();
 
                 $scope.$parent.reader.onload = (function(theFile) {
@@ -177,7 +179,7 @@ artsWebApp.controller('confirmState', function ($scope) {
             'key' : $scope.$parent.key,
             'content' : $scope.userContent,
             'contentType' : $scope.contentType
-        };Z
+        };
         // Todo, Ajax call
     });
 });
