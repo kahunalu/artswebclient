@@ -167,7 +167,7 @@ artsWebApp.controller('confirmState', function ($scope) {
                         var span = document.createElement('span');
                         span.innerHTML = ['<img class="image-preview" src="', e.target.result,
                                             '" title="', escape(theFile.name), '"/>'].join('');
-                        document.getElementById('imagePreview').insertBefore(span, null);
+                        document.getElementById('imageFinal').insertBefore(span, null);
                     };
                 })($scope.$parent.imageContent._file);
 
