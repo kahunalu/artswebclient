@@ -103,7 +103,7 @@
                 <div ng-show='contentType == "text"'>
                     <div class="form-group">
                         <label for="inputlg">Text Content</label>
-                        <input ng-model="userContent" ng-disabled="true" class="form-control input-lg" id="inputlg" type="text">
+                        <input ng-model="contentData" ng-disabled="true" class="form-control input-lg" id="inputlg" type="text">
                     </div>
                 </div>
                 <div id="imageFinal" ng-show='contentType == "image"'>
@@ -113,7 +113,7 @@
                 <div class="row">
                 </div>
                 <div class="QRPreview row">
-                    <qrcode version="2" error-correction-level="M" size="300" data="artag.xyz/{{key}}" download></qrcode>
+                    <qrcode version="2" error-correction-level="M" size="300" data="{{key}}" download></qrcode>
                     <h4>Click Tag to Download <span class="glyphicon glyphicon-download"></span></h4>
                 </div>
             </div>

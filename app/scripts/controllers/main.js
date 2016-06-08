@@ -138,29 +138,41 @@ artsWebApp.controller('adjustState', function ($scope) {
     $scope.test = 'test string in adjustState';
 });
 
-artsWebApp.controller('confirmState', function ($scope) {
+artsWebApp.controller('confirmState', function ($scope, dataFactory){
 
-    $scope.key = null;
-    $scope.userContent = null;
-    $scope.contentType = null;
+    /*
+        Initialize everything to null
+    */
+    $scope.key          = null;
+    $scope.contentData  = null;
+    $scope.contentType  = null;
 
-    $scope.printQR = function(){
-        document.getElementById('QRCode').contentWindow.print();
-    };
 
+    /*
+        Watch for the confirm state to become true
+    */
     $scope.$watch('confirmState', function(){
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-        }
-
         if($scope.$parent.confirmState){
-            $scope.key = s4()+s4()+s4();
+            
+            /*
+                If the content is text
+            */
             if($scope.$parent.textContent !== null ){
-                $scope.userContent = $scope.$parent.textContent;
-                $scope.contentType = 'text';
+                $scope.contentData  = $scope.$parent.textContent;
+                $scope.contentType  = 'text';
+            
+            /*
+                If the content is an image
+            */
             }else{
-                $scope.contentType = 'image';
+                $scope.contentData = new FormData();
+                $scope.contentData.append('file', $scope.$parent.imageContent._file);
+                
+                $scope.contentType  = 'image';
 
+                /*
+                    Display image preview on page
+                */
                 $scope.$parent.reader = new FileReader();
 
                 $scope.$parent.reader.onload = (function(theFile) {
@@ -173,13 +185,25 @@ artsWebApp.controller('confirmState', function ($scope) {
 
                 $scope.$parent.reader.readAsDataURL($scope.$parent.imageContent._file);
             }
-        }
 
-        var QRData = {
-            'key' : $scope.$parent.key,
-            'content' : $scope.userContent,
-            'contentType' : $scope.contentType
-        };
-        // Todo, Ajax call
+            /*
+                Create body & url for post request
+            */
+            var url = 'http://127.0.0.1:5000/content/setContent';
+            
+            var body = {
+                'contentType': $scope.contentType,
+                'contentData': $scope.contentData,
+            };
+
+            /*
+                Make post request and set key as response.
+            */
+            dataFactory.postQrCodeData(url, body).then(function(key){
+                $scope.key = key;
+            }, function(error){
+                console.log(error);
+            });
+        }
     });
 });

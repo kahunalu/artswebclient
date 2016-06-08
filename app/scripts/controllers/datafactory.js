@@ -8,15 +8,9 @@ angular.module('artswebclientMasterApp')
     .factory('dataFactory', function($q, $http, utilsFactory) {
         var factory = {};
 
-        factory.postQrCodeData = function(type, key) {
-            var url = '<REPLACE WITH SERVER ENDPOINT>';
+        factory.postQrCodeData = function(url, body, formdata) {
 
-            var body = {
-            	'type':type,
-            	'key':key
-            };
-
-            return utilsFactory.postRequest(url, body);
+            return utilsFactory.postRequest(url, body, formdata);
         };
 
         return factory;
