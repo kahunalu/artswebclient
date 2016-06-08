@@ -147,6 +147,27 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
     $scope.contentData  = null;
     $scope.contentType  = null;
 
+    $scope.sendRequest = function(){
+        /*
+            Create body & url for post request
+        */
+        var url = 'http://artsserver.herokuapp.com/content/setContent';
+        
+        var body = {
+            'contentType': $scope.contentType,
+            'contentData': $scope.contentData,
+        };
+
+        /*
+            Make post request and set key as response.
+        */
+        dataFactory.postQrCodeData(url, body).then(function(key){
+            $scope.key = key;
+        }, function(error){
+            console.log(error);
+        });
+    };
+
 
     /*
         Watch for the confirm state to become true
@@ -160,16 +181,11 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
             if($scope.$parent.textContent !== null ){
                 $scope.contentData  = $scope.$parent.textContent;
                 $scope.contentType  = 'text';
-            
+                $scope.sendRequest();
             /*
                 If the content is an image
             */
             }else{
-                $scope.contentData = new FormData();
-                $scope.contentData.append('file', $scope.$parent.imageContent._file);
-                
-                $scope.contentType  = 'image';
-
                 /*
                     Display image preview on page
                 */
@@ -177,6 +193,9 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
 
                 $scope.$parent.reader.onload = (function(theFile) {
                     return function(e) {
+                        $scope.contentType  = 'image';
+                        $scope.contentData  = $scope.$parent.reader.result;
+                        $scope.sendRequest();
                         var span = ['<span>','<img class="image-preview" src="', e.target.result,
                                             '" title="', escape(theFile.name), '"/>','</span>'].join('');
                         document.getElementById('imageFinal').innerHTML = span;
@@ -185,25 +204,6 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
 
                 $scope.$parent.reader.readAsDataURL($scope.$parent.imageContent._file);
             }
-
-            /*
-                Create body & url for post request
-            */
-            var url = 'http://127.0.0.1:5000/content/setContent';
-            
-            var body = {
-                'contentType': $scope.contentType,
-                'contentData': $scope.contentData,
-            };
-
-            /*
-                Make post request and set key as response.
-            */
-            dataFactory.postQrCodeData(url, body).then(function(key){
-                $scope.key = key;
-            }, function(error){
-                console.log(error);
-            });
         }
     });
 });
