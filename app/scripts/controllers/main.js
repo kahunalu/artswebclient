@@ -154,20 +154,22 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
         var url = 'http://artsserver.herokuapp.com/content/setContent',
         body;
 
-        if($scope.contentType == 'text'){
+        if($scope.contentType === 'text'){
             var tCtx = document.getElementById('textCanvas').getContext('2d'),
             imageElem = document.getElementById('image');
             
             tCtx.canvas.width = tCtx.measureText($scope.contentData).width + 300;
             tCtx.fillText($scope.contentData, 0, 10);
             imageElem.src = tCtx.canvas.toDataURL();
+            
             body = {
                 'contentType': 'image',
                 'contentData': tCtx.canvas.toDataURL(),
             };
+        
         }else{
             body = {
-                'contentType': $scope.contentType,
+                'contentType': 'image',
                 'contentData': $scope.contentData,
             };
         }
@@ -194,8 +196,8 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
             */
             if($scope.$parent.textContent !== null ){
                 $scope.contentData  = $scope.$parent.textContent;
-                $scope.contentType  = 'text';
                 $scope.sendRequest();
+
             /*
                 If the content is an image
             */
@@ -206,10 +208,14 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
                 $scope.$parent.reader = new FileReader();
 
                 $scope.$parent.reader.onload = (function(theFile) {
-                    return function(e) {
-                        $scope.contentType  = 'image';
-                        $scope.contentData  = $scope.$parent.reader.result;
+                    return function(e){
+                        $scope.contentType = 'image';
+
+                        //remove meta-data up to the first comma.
+                        $scope.contentData  = $scope.$parent.reader.result.split(/,(.+)/)[1];
+
                         $scope.sendRequest();
+
                         var span = ['<span>','<img class="image-preview" src="', e.target.result,
                                             '" title="', escape(theFile.name), '"/>','</span>'].join('');
                         document.getElementById('imageFinal').innerHTML = span;
