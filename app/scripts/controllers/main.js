@@ -155,16 +155,19 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
         body;
 
         if($scope.contentType === 'text'){
-            var tCtx = document.getElementById('textCanvas').getContext('2d'),
+            var textCanvasObj = document.getElementById('textCanvas').getContext('2d'),
             imageElem = document.getElementById('image');
-            
-            tCtx.canvas.width = tCtx.measureText($scope.contentData).width + 300;
-            tCtx.fillText($scope.contentData, 0, 10);
-            imageElem.src = tCtx.canvas.toDataURL();
-            
+
+            textCanvasObj.font = "120px Arial";                 // Set font before measureText to get accurate spacing
+            textCanvasObj.canvas.width = textCanvasObj.measureText($scope.contentData).width;
+            textCanvasObj.textBaseline = "hanging";             // Align text at very top of canvas
+            textCanvasObj.font = "120px Arial";                 // Need to reset font for some reason
+            textCanvasObj.fillText($scope.contentData, 0, 0);   // Set content and place at 0,0
+            imageElem.src = textCanvasObj.canvas.toDataURL();   // Show image on confirm page
+           
             body = {
                 'contentType': 'image',
-                'contentData': tCtx.canvas.toDataURL().split(/,(.+)/)[1],
+                'contentData': textCanvasObj.canvas.toDataURL().split(/,(.+)/)[1],
             };
         
         }else{
