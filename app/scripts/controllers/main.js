@@ -151,12 +151,26 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
         /*
             Create body & url for post request
         */
-        var url = 'http://artsserver.herokuapp.com/content/setContent';
-        
-        var body = {
-            'contentType': $scope.contentType,
-            'contentData': $scope.contentData,
-        };
+        var url = 'http://artsserver.herokuapp.com/content/setContent',
+        body;
+
+        if($scope.contentType == 'text'){
+            var tCtx = document.getElementById('textCanvas').getContext('2d'),
+            imageElem = document.getElementById('image');
+            
+            tCtx.canvas.width = tCtx.measureText($scope.contentData).width + 300;
+            tCtx.fillText($scope.contentData, 0, 10);
+            imageElem.src = tCtx.canvas.toDataURL();
+            body = {
+                'contentType': 'image',
+                'contentData': tCtx.canvas.toDataURL(),
+            };
+        }else{
+            body = {
+                'contentType': $scope.contentType,
+                'contentData': $scope.contentData,
+            };
+        }
 
         /*
             Make post request and set key as response.
