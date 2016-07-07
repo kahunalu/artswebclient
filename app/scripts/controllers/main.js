@@ -164,7 +164,7 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
             
             body = {
                 'contentType': 'image',
-                'contentData': tCtx.canvas.toDataURL(),
+                'contentData': tCtx.canvas.toDataURL().split(/,(.+)/)[1],
             };
         
         }else{
@@ -195,6 +195,7 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
                 If the content is text
             */
             if($scope.$parent.textContent !== null ){
+                $scope.contentType  = 'text';
                 $scope.contentData  = $scope.$parent.textContent;
                 $scope.sendRequest();
 
