@@ -67,7 +67,7 @@
         <div class="contentDZ jumbotron row" ng-show="textSelected">
             <div class="form-group">
                 <label for="inputlg">Text Content</label>
-                <input ng-model="textValue" ng-blur="setText(textValue)" class="form-control input-lg" id="inputlg" type="text">
+                <textarea ng-model="textValue" ng-blur="setText(textValue)" class="form-control input-lg" name="inputlg" col="2" rows="3"></textarea>
             </div>
         </div>
 
@@ -104,7 +104,7 @@
                     <div class="form-group">
                         <label for="inputlg">Text Content</label>
                         <input ng-model="contentData" ng-disabled="true" class="form-control input-lg" id="inputlg" type="text">
-                        <canvas id='textCanvas' ng-hide="true" height=300></canvas>
+                        <canvas id='textCanvas' ng-hide="true"></canvas>
                         <img id='image'>
                     </div>
                 </div>

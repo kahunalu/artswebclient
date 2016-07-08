@@ -147,6 +147,42 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
     $scope.contentData  = null;
     $scope.contentType  = null;
 
+
+        /**
+         * Divide an entire phrase in an array of phrases, all with the max pixel length given.
+         * The words are initially separated by the space char.
+         * @param phrase
+         * @param length
+         * @return
+         */
+    function getLines(ctx, phrase, maxPxLength, textStyle) {
+        var wa=phrase.split(" "),
+            phraseArray=[],
+            lastPhrase=wa[0],
+            measure=0,
+            splitChar=" ";
+        if (wa.length <= 1) {
+            return wa
+        }
+
+        ctx.font = textStyle;
+        for (var i=1;i<wa.length;i++) {
+            var w=wa[i];
+            measure=ctx.measureText(lastPhrase+splitChar+w).width;
+            if (measure<maxPxLength) {
+                lastPhrase+=(splitChar+w);
+            } else {
+                phraseArray.push(lastPhrase);
+                lastPhrase=w;
+            }
+            if (i===wa.length-1) {
+                phraseArray.push(lastPhrase);
+                break;
+            }
+        }
+        return phraseArray;
+    }
+
     $scope.sendRequest = function(){
         /*
             Create body & url for post request
@@ -155,16 +191,33 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
         body;
 
         if($scope.contentType === 'text'){
-            var tCtx = document.getElementById('textCanvas').getContext('2d'),
-            imageElem = document.getElementById('image');
+            var textCanvasObj = document.getElementById('textCanvas').getContext('2d'),
+            imageElem = document.getElementById('image'),
+            textContentLines,
+            textLineLength = 0,
+            maxLineLength = 0,
+            i = 0,
+            y = 0;
+
+            textCanvasObj.font = "50px Arial";                          // Set font before measureText to get accurate spacing
+            textLineLength = textCanvasObj.measureText($scope.contentData).width;
+            maxLineLength = (textLineLength > 700) ? 700 : textLineLength; 
+
+            textContentLines = getLines(textCanvasObj, $scope.contentData, maxLineLength, "50px Arial");
+            textCanvasObj.canvas.height = textContentLines.length*50;   // Set canvas height
+            textCanvasObj.canvas.width = maxLineLength;                 // Set canvas width
+            textCanvasObj.font = "50px Arial";                          // Need to reset font for some reason
+            textCanvasObj.textBaseline = "hanging";                     // Align text at very top of canvas
             
-            tCtx.canvas.width = tCtx.measureText($scope.contentData).width + 300;
-            tCtx.fillText($scope.contentData, 0, 10);
-            imageElem.src = tCtx.canvas.toDataURL();
+            for(i = 0; i < textContentLines.length; i++){               // Make single/multiple lines in canvas
+                textCanvasObj.fillText(textContentLines[i], 0, y + (i*50));
+            }
+
+            imageElem.src = textCanvasObj.canvas.toDataURL();           // Show image on confirm page
             
             body = {
                 'contentType': 'image',
-                'contentData': tCtx.canvas.toDataURL().split(/,(.+)/)[1],
+                'contentData': textCanvasObj.canvas.toDataURL().split(/,(.+)/)[1],
             };
         
         }else{
