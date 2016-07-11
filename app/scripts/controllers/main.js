@@ -188,7 +188,7 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
         /*
             Create body & url for post request
         */
-        var url = 'http://127.0.0.1:5000/content/setContent',
+        var url = 'http://artsserver.herokuapp.com/content/setContent',
         body;
 
         if($scope.contentType === 'text'){
