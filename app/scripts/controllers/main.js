@@ -138,7 +138,7 @@ artsWebApp.controller('adjustState', function ($scope) {
     $scope.test = 'test string in adjustState';
 });
 
-artsWebApp.controller('confirmState', function ($scope, dataFactory){
+artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
 
     /*
         Initialize everything to null
@@ -148,6 +148,14 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
     $scope.contentType  = null;
     $scope.contentSize  = null;
 
+    /* 
+        hacky way of restarting the flow, 
+        works but better way would be to clear everything 
+        and start in image/text upload state 
+    */
+    $scope.restartFlow = function(){
+        $location.url('artag.xyz');
+    };
 
         /**
          * Divide an entire phrase in an array of phrases, all with the max pixel length given.
@@ -157,13 +165,13 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
          * @return
          */
     function getLines(ctx, phrase, maxPxLength, textStyle) {
-        var wa=phrase.split(" "),
+        var wa=phrase.split(' '),
             phraseArray=[],
             lastPhrase=wa[0],
             measure=0,
-            splitChar=" ";
+            splitChar=' ';
         if (wa.length <= 1) {
-            return wa
+            return wa;
         }
 
         ctx.font = textStyle;
@@ -200,15 +208,15 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
             i = 0,
             y = 0;
 
-            textCanvasObj.font = "50px Arial";                          // Set font before measureText to get accurate spacing
+            textCanvasObj.font = '50px Arial';                          // Set font before measureText to get accurate spacing
             textLineLength = textCanvasObj.measureText($scope.contentData).width;
             maxLineLength = (textLineLength > 700) ? 700 : textLineLength; 
 
-            textContentLines = getLines(textCanvasObj, $scope.contentData, maxLineLength, "50px Arial");
+            textContentLines = getLines(textCanvasObj, $scope.contentData, maxLineLength, '50px Arial');
             textCanvasObj.canvas.height = textContentLines.length*50;   // Set canvas height
             textCanvasObj.canvas.width = maxLineLength;                 // Set canvas width
-            textCanvasObj.font = "50px Arial";                          // Need to reset font for some reason
-            textCanvasObj.textBaseline = "hanging";                     // Align text at very top of canvas
+            textCanvasObj.font = '50px Arial';                          // Need to reset font for some reason
+            textCanvasObj.textBaseline = 'hanging';                     // Align text at very top of canvas
             
             for(i = 0; i < textContentLines.length; i++){               // Make single/multiple lines in canvas
                 textCanvasObj.fillText(textContentLines[i], 0, y + (i*50));
@@ -258,37 +266,56 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
             var qrImage = new Image();
             anchorImage.src = 'images/anchortag.png';
 
-            setTimeout(function(){
+            var createAnchorTag = function(){
+                /*Get the current qrImage data*/
+                qrImage.src = downloadlink.getAttribute('href');
 
-                qrImage.src = downloadlink.getAttribute("href");
+                /*Check if the qrimage has null in it and return if so*/
+                var patt = /null/g;
+                if(patt.test(qrImage.src)){
+                    return;
+                }
+
+                /*If the qrimage is not null clear interval check and process image*/
+                clearInterval(checkIntervalId);
+
+                /* Increase Previous Canvas size to accomodate new anchor tag */
                 canvas.width += 50;
                 canvas.height += 375;
 
-                context.fillStyle = "#FFFFFF";
+                /* Create a background, and border*/
+                context.fillStyle = '#FFFFFF';
                 context.fillRect(0,0,350,675);
                 context.lineWidth = 5;
-                context.strokeStyle="#000000";
+                context.strokeStyle='#000000';
                 context.strokeRect(0, 0, 350, 675);
+
+                /*Draw the qrImage first then the anchorImage*/
                 context.drawImage(qrImage, 25, 25);
                 context.drawImage(anchorImage, 25, 350);
                 
-                var link = document.createElement("a");
-                link.href = canvas.toDataURL("image/png");
-                link.download = "anchorTag.png";
+                /*Create elements on the DOM for the preview and link*/
+                var link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'anchorTag.png';
 
-                var preview = document.createElement("img");
-                preview.src = canvas.toDataURL("image/png");
-                preview.className = "qr-preview-image";
+                var preview = document.createElement('img');
+                preview.src = canvas.toDataURL('image/png');
+                preview.className = 'qr-preview-image';
                 
-                var anchortaglink = document.getElementById("anchorTagLink");
+                var anchortaglink = document.getElementById('anchorTagLink');
                 
                 link.appendChild(preview);
                 anchortaglink.appendChild(link);
                 
+                /*Turn off the loading flag*/
                 $scope.$apply(function(){
                     $scope.loading = false;
                 });
-            },2000);
+            };
+
+            /*Execute the createAnchorTag function every .5s, if tag is generated stop*/
+            var checkIntervalId = setInterval(createAnchorTag, 500);
 
             /*
                 If the content is text
