@@ -30,6 +30,10 @@ body {
     border-top: 1px solid #e5e5e5;
 }
 
+.qrcode {
+    width: 250px;
+}
+
 .container-narrow > hr {
     margin: 30px 0;
 }
@@ -77,6 +81,12 @@ body {
 
 .QRPreview {
     padding: 30px;
-    height: 346px;
+    height: 525px;
+    width: 308px;
     text-align: center;
+
+}
+
+.qr-preview-image {
+    width: 250px;
 }

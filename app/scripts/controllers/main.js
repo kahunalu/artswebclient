@@ -146,6 +146,7 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
     $scope.key          = null;
     $scope.contentData  = null;
     $scope.contentType  = null;
+    $scope.contentSize  = null;
 
 
         /**
@@ -216,12 +217,14 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
             imageElem.src = textCanvasObj.canvas.toDataURL();           // Show image on confirm page
             
             body = {
+                'contentSize': $scope.contentSize,
                 'contentType': 'image',
                 'contentData': textCanvasObj.canvas.toDataURL().split(/,(.+)/)[1],
             };
         
         }else{
             body = {
+                'contentSize': $scope.contentSize,
                 'contentType': 'image',
                 'contentData': $scope.contentData,
             };
@@ -243,7 +246,50 @@ artsWebApp.controller('confirmState', function ($scope, dataFactory){
     */
     $scope.$watch('confirmState', function(){
         if($scope.$parent.confirmState){
-            
+
+            $scope.loading = true;
+
+            var downloadlink = document.getElementsByClassName('qrcode-link')[0];
+
+            var canvas = document.getElementsByClassName('qrcode')[0],
+            context = canvas.getContext('2d');
+        
+            var anchorImage = new Image();
+            var qrImage = new Image();
+            anchorImage.src = 'images/anchortag.png';
+
+            setTimeout(function(){
+
+                qrImage.src = downloadlink.getAttribute("href");
+                canvas.width += 50;
+                canvas.height += 375;
+
+                context.fillStyle = "#FFFFFF";
+                context.fillRect(0,0,350,675);
+                context.lineWidth = 5;
+                context.strokeStyle="#000000";
+                context.strokeRect(0, 0, 350, 675);
+                context.drawImage(qrImage, 25, 25);
+                context.drawImage(anchorImage, 25, 350);
+                
+                var link = document.createElement("a");
+                link.href = canvas.toDataURL("image/png");
+                link.download = "anchorTag.png";
+
+                var preview = document.createElement("img");
+                preview.src = canvas.toDataURL("image/png");
+                preview.className = "qr-preview-image";
+                
+                var anchortaglink = document.getElementById("anchorTagLink");
+                
+                link.appendChild(preview);
+                anchortaglink.appendChild(link);
+                
+                $scope.$apply(function(){
+                    $scope.loading = false;
+                });
+            },2000);
+
             /*
                 If the content is text
             */

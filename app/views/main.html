@@ -62,6 +62,23 @@
             </div>
             <div class="col-md-2" ng-show="imageUploaded">
             </div>
+            <hr>
+            <div class="pull-left" ng-init="contentSize=2">
+                <div>
+                    <h4>
+                        <b>Augmented Image Size:</b>
+                    </h4>
+                </div>
+                <div class="checkbox-inline">
+                    <label><input type="radio" ng-model="contentSize" value="1">Small</label>
+                </div>
+                <div class="checkbox-inline">
+                    <label><input type="radio" ng-model="contentSize" value="2">Medium</label>
+                </div>
+                <div class="checkbox-inline disabled">
+                    <label><input type="radio" ng-model="contentSize" value="4">Large</label>
+                </div>
+            </div>
         </div>
 
         <div class="contentDZ jumbotron row" ng-show="textSelected">
@@ -69,10 +86,28 @@
                 <label for="inputlg">Text Content</label>
                 <textarea ng-model="textValue" ng-blur="setText(textValue)" class="form-control input-lg" name="inputlg" col="2" rows="3"></textarea>
             </div>
+            <hr>
+            <div class="pull-left">
+                <div>
+                    <h4>
+                        <b>Augmented Text Size:</b>
+                    </h4>
+                </div>
+                <div class="checkbox-inline" ng-init="contentSize=2">
+                    <label><input type="radio" ng-model="contentSize" value="1">Small</label>
+                </div>
+                <div class="checkbox-inline">
+                    <label><input type="radio" ng-model="contentSize" value="2">Medium</label>
+                </div>
+                <div class="checkbox-inline disabled">
+                    <label><input type="radio" ng-model="contentSize" value="4">Large</label>
+                </div>
+            </div>
         </div>
 
         <div class="nextButton row">
-            <button type="button" class="btn btn-success pull-right" ng-click="switchState(); resetValues()" ng-disabled="incomplete">
+            <button type="button" class="btn btn-success pull-right" ng-click="switchState(); resetValues()" 
+            ng-disabled="(textSelected && !textValue)||(imageSelected && !imageUploaded)">
                 Finish <span class="glyphicon glyphicon-chevron-right"></span>
             </button>
         </div>
@@ -115,7 +150,10 @@
                 <div class="row">
                 </div>
                 <div class="QRPreview row">
-                    <qrcode version="2" error-correction-level="M" size="300" data="{{key}}" download></qrcode>
+                    <img class="centerBlock loader"src="/images/loader.gif" ng-show="loading">
+                    <qrcode version="2" error-correction-level="M" size="300" data="{{key}}" ng-show="false" download></qrcode>
+                    <div id="anchorTagLink">
+                    </div>
                     <h4>Click Tag to Download <span class="glyphicon glyphicon-download"></span></h4>
                 </div>
             </div>
