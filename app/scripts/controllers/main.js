@@ -219,13 +219,13 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
 
 
             textContentLines = getLines(textCanvasObj, $scope.contentData, maxLineLength, '50px Arial');
-            textCanvasObj.canvas.height = textContentLines.length*50;   // Set canvas height
-            textCanvasObj.canvas.width = maxLineLength;                 // Set canvas width
+            textCanvasObj.canvas.height = 50+(textContentLines.length*50);   // Set canvas height
+            textCanvasObj.canvas.width = 50+maxLineLength;                 // Set canvas width
             
             //This is the backgroud image color, null->clear
             if($scope.$parent.imageColor){
                 textCanvasObj.fillStyle = $scope.$parent.imageColor;
-                textCanvasObj.fillRect(0,0, maxLineLength, textContentLines.length*50);
+                textCanvasObj.fillRect(0,0, maxLineLength+50, 50+(textContentLines.length*50));
             }
             
             textCanvasObj.font = '50px Arial';                          // Need to reset font for some reason
@@ -233,7 +233,7 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
             
             textCanvasObj.fillStyle = '#000000';
             for(i = 0; i < textContentLines.length; i++){               // Make single/multiple lines in canvas
-                textCanvasObj.fillText(textContentLines[i], 0, y + (i*50));
+                textCanvasObj.fillText(textContentLines[i], 25, 25 + y + (i*50));
             }
 
             imageElem.src = textCanvasObj.canvas.toDataURL();           // Show image on confirm page
