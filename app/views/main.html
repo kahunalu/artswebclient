@@ -87,13 +87,13 @@
                 <textarea ng-model="textValue" ng-blur="setText(textValue)" class="form-control input-lg" name="inputlg" col="2" rows="3"></textarea>
             </div>
             <hr>
-            <div class="pull-left">
+            <div class="pull-left" ng-init="contentSize=2">
                 <div>
                     <h4>
                         <b>Augmented Text Size:</b>
                     </h4>
                 </div>
-                <div class="checkbox-inline" ng-init="contentSize=2">
+                <div class="checkbox-inline">
                     <label><input type="radio" ng-model="contentSize" value="1">Small</label>
                 </div>
                 <div class="checkbox-inline">
@@ -101,6 +101,25 @@
                 </div>
                 <div class="checkbox-inline disabled">
                     <label><input type="radio" ng-model="contentSize" value="4">Large</label>
+                </div>
+            </div>
+            <div class="pull-right" ng-init="$parent.imageColor=0">
+                <div>
+                    <h4>
+                        <b>Augmented Text Color:</b>
+                    </h4>
+                </div>
+                <div class="checkbox-inline">
+                    <label><input type="radio" ng-model="$parent.imageColor" value="#FF0000">Red</label>
+                </div>
+                <div class="checkbox-inline">
+                    <label><input type="radio" ng-model="$parent.imageColor" value="#0000FF">Blue</label>
+                </div>
+                <div class="checkbox-inline disabled">
+                    <label><input type="radio" ng-model="$parent.imageColor" value="#00FF00">Green</label>
+                </div>
+                <div class="checkbox-inline disabled">
+                    <label><input type="radio" ng-model="$parent.imageColor" value="0">Clear</label>
                 </div>
             </div>
         </div>
@@ -138,7 +157,7 @@
                 <div ng-show='contentType == "text"'>
                     <div class="form-group">
                         <label for="inputlg">Text Content</label>
-                        <input ng-model="contentData" ng-disabled="true" class="form-control input-lg" id="inputlg" type="text">
+                        <br>
                         <canvas id='textCanvas' ng-hide="true"></canvas>
                         <img id='image'>
                     </div>
