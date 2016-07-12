@@ -17,7 +17,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'angularFileUpload',
-    'monospaced.qrcode'
+    'monospaced.qrcode',
+    'color.picker'
   ])
   .config(function ($routeProvider) {
     $routeProvider

@@ -15,7 +15,8 @@ artsWebApp.controller('MainCtrl', function ($scope) {
     $scope.imageContent = null;
     $scope.key          = null;
     $scope.contentSize  = null;
-    $scope.imageColor   = null;
+    $scope.imageColor   = '#00000000';
+    $scope.textColor    = '#000000FF';
 
     $scope.reader       = null;
 
@@ -80,6 +81,15 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
             $scope.imageSelected    = true;
             $scope.textSelected     = false;
         }
+    };
+
+    $scope.colorPickerOptions = {
+        format: 'HEX',
+        alpha: true,
+        swatch: true,
+        swatchBootstrap: false,
+        swatchOnly: true,
+        pos: 'top left'
     };
 
     var uploader = $scope.uploader = new FileUploader({
@@ -222,16 +232,14 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
             textCanvasObj.canvas.height = 50+(textContentLines.length*50);   // Set canvas height
             textCanvasObj.canvas.width = 50+maxLineLength;                 // Set canvas width
             
-            //This is the backgroud image color, null->clear
-            if($scope.$parent.imageColor){
-                textCanvasObj.fillStyle = $scope.$parent.imageColor;
-                textCanvasObj.fillRect(0,0, maxLineLength+50, 50+(textContentLines.length*50));
-            }
+            
+            textCanvasObj.fillStyle = $scope.$parent.imageColor;
+            textCanvasObj.fillRect(0,0, maxLineLength+50, 50+(textContentLines.length*50));
             
             textCanvasObj.font = '50px Arial';                          // Need to reset font for some reason
             textCanvasObj.textBaseline = 'hanging';                     // Align text at very top of canvas
 
-            textCanvasObj.fillStyle = '#000000';
+            textCanvasObj.fillStyle = $scope.$parent.textColor;
             for(i = 0; i < textContentLines.length; i++){               // Make single/multiple lines in canvas
                 textCanvasObj.fillText(textContentLines[i], 25, 25 + y + (i*50));
             }

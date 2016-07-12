@@ -34,6 +34,8 @@ module.exports = function(config) {
       'bower_components/qrcode-generator/js/qrcode.js',
       'bower_components/qrcode-generator/js/qrcode_UTF8.js',
       'bower_components/angular-qrcode/angular-qrcode.js',
+      'bower_components/tinycolor/tinycolor.js',
+      'bower_components/angular-color-picker/dist/angularjs-color-picker.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',
