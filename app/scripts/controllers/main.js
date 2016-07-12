@@ -69,7 +69,6 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     $scope.textSelected     = false;
     $scope.imageUploaded    = false;
     $scope.contentSize      = null;
-    $scope.imageColor       = null;
 
     $scope.textValue = null;
 
@@ -91,6 +90,18 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         swatchOnly: true,
         pos: 'top left'
     };
+
+    $scope.textColorPickerApi = {
+        onChange: function(){
+            $scope.drawCanvas();
+        },
+    }
+
+    $scope.backgroundColorPickerApi = {
+        onChange: function(){
+            $scope.drawCanvas();
+        },
+    }
 
     var uploader = $scope.uploader = new FileUploader({
         url: '<REPLACE WITH SERVER ENDPOINT>',
@@ -130,55 +141,54 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     };
 
     $scope.setText = function(text){
-        $scope.incomplete = false;
+        $scope.incomplete           = false;
         $scope.$parent.imageContent = null;
-        $scope.$parent.textContent = text;
-        $scope.$parent.contentSize = $scope.contentSize;
-        $scope.imageUploaded = false;
+        $scope.$parent.textContent  = text;
+        $scope.$parent.contentSize  = $scope.contentSize;
+        $scope.imageUploaded        = false;
         uploader.clearQueue();
+        $scope.drawCanvas();
     };
 
-    $scope.resetValues = function(){
-        $scope.incomplete       = true;
-        $scope.imageSelected    = true;
-        $scope.textSelected     = false;
-        $scope.imageUploaded    = false;
+    $scope.drawCanvas = function(){
+        var textCanvasObj = document.getElementById('textCanvas').getContext('2d'),
+        text = $scope.$parent.textContent,
+        textContentLines,
+        textLineLength = 0,
+        maxLineLength = 0,
+        i = 0,
+        y = 0;
 
-        $scope.textValue = null;
-        uploader.clearQueue();
-    };
+        textCanvasObj.font = '50px Arial';                          // Set font before measureText to get accurate spacing
+        textLineLength = textCanvasObj.measureText(text).width;
+        maxLineLength = (textLineLength > 700) ? 700 : textLineLength; 
 
-}]);
 
-artsWebApp.controller('adjustState', function ($scope) {
-    $scope.test = 'test string in adjustState';
-});
+        textContentLines = getLines(textCanvasObj, text, maxLineLength, '50px Arial');
+        textCanvasObj.canvas.height = 50+(textContentLines.length*50); // Set canvas height
+        textCanvasObj.canvas.width = 50+maxLineLength;                 // Set canvas width
+            
+        //This is the backgroud image color, null->clear
+        textCanvasObj.fillStyle = $scope.imageColor;      
+        textCanvasObj.fillRect(0,0, maxLineLength+50, 50+(textContentLines.length*50));
+        textCanvasObj.font = '50px Arial';                          // Need to reset font for some reason
+        textCanvasObj.textBaseline = 'hanging';                     // Align text at very top of canvas
+        textCanvasObj.fillStyle = $scope.textColor;         // Filling text color from picker
 
-artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
+        for(i = 0; i < textContentLines.length; i++){               // Make single/multiple lines in canvas
+            textCanvasObj.fillText(textContentLines[i], 25, 25 + y + (i*50));
+        }
+        $scope.$parent.textImage = textCanvasObj.canvas.toDataURL();
+    }; 
 
-    /*
-        Initialize everything to null
+    /**
+    * Divide an entire phrase in an array of phrases
+    * @param ctx = canvas element
+    * @param phrase = text that needs to be put into multi-lines
+    * @param maxPxLength = max line length in px
+    * @param textStyle = string representing the text's style 
+    * @return array with the phrase split into lines
     */
-    $scope.key          = null;
-    $scope.contentData  = null;
-    $scope.contentType  = null;
-
-    /* 
-        hacky way of restarting the flow, 
-        works but better way would be to clear everything 
-        and start in image/text upload state 
-    */
-    $scope.restartFlow = function(){
-        $location.url('artag.xyz');
-    };
-
-        /**
-         * Divide an entire phrase in an array of phrases, all with the max pixel length given.
-         * The words are initially separated by the space char.
-         * @param phrase
-         * @param length
-         * @return
-         */
     function getLines(ctx, phrase, maxPxLength, textStyle) {
         var wa=phrase.split(' '),
             phraseArray=[],
@@ -207,58 +217,50 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
         return phraseArray;
     }
 
+    $scope.resetValues = function(){
+        $scope.incomplete       = true;
+        $scope.imageSelected    = true;
+        $scope.textSelected     = false;
+        $scope.imageUploaded    = false;
+        $scope.textValue        = null;
+        uploader.clearQueue();
+    };
+
+}]);
+
+artsWebApp.controller('adjustState', function ($scope) {
+    $scope.test = 'test string in adjustState';
+});
+
+artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
+
+    /*
+        Initialize everything to null
+    */
+    $scope.key          = null;
+    $scope.contentData  = null;
+    $scope.contentType  = null;
+
+    /* 
+        hacky way of restarting the flow, 
+        works but better way would be to clear everything 
+        and start in image/text upload state 
+    */
+    $scope.restartFlow = function(){
+        $location.url('artag.xyz');
+    };
+
     $scope.sendRequest = function(){
         /*
             Create body & url for post request
         */
-        var url = 'http://artsserver.herokuapp.com/content/setContent',
-        body;
-
-        if($scope.contentType === 'text'){
-            var textCanvasObj = document.getElementById('textCanvas').getContext('2d'),
-            imageElem = document.getElementById('image'),
-            textContentLines,
-            textLineLength = 0,
-            maxLineLength = 0,
-            i = 0,
-            y = 0;
-
-            textCanvasObj.font = '50px Arial';                          // Set font before measureText to get accurate spacing
-            textLineLength = textCanvasObj.measureText($scope.contentData).width;
-            maxLineLength = (textLineLength > 700) ? 700 : textLineLength; 
-
-
-            textContentLines = getLines(textCanvasObj, $scope.contentData, maxLineLength, '50px Arial');
-            textCanvasObj.canvas.height = 50+(textContentLines.length*50);   // Set canvas height
-            textCanvasObj.canvas.width = 50+maxLineLength;                 // Set canvas width
-            
-            
-            textCanvasObj.fillStyle = $scope.$parent.imageColor;
-            textCanvasObj.fillRect(0,0, maxLineLength+50, 50+(textContentLines.length*50));
-            
-            textCanvasObj.font = '50px Arial';                          // Need to reset font for some reason
-            textCanvasObj.textBaseline = 'hanging';                     // Align text at very top of canvas
-
-            textCanvasObj.fillStyle = $scope.$parent.textColor;
-            for(i = 0; i < textContentLines.length; i++){               // Make single/multiple lines in canvas
-                textCanvasObj.fillText(textContentLines[i], 25, 25 + y + (i*50));
-            }
-
-            imageElem.src = textCanvasObj.canvas.toDataURL();           // Show image on confirm page
-            
-            body = {
-                'contentType': 'image',
-                'contentData': textCanvasObj.canvas.toDataURL().split(/,(.+)/)[1],
-                'contentSize': $scope.$parent.contentSize,
-            };
+        var url = 'http://artsserver.herokuapp.com/content/setContent';
         
-        }else{
-            body = {
-                'contentSize': $scope.$parent.contentSize,
-                'contentType': 'image',
-                'contentData': $scope.contentData,
-            };
-        }
+        var body = {
+            'contentType': 'image',
+            'contentData': $scope.contentData,
+            'contentSize': $scope.$parent.contentSize,
+        };
 
         /*
             Make post request and set key as response.
@@ -279,13 +281,12 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
 
             $scope.loading = true;
 
-            var downloadlink = document.getElementsByClassName('qrcode-link')[0];
+            var downloadlink = document.getElementsByClassName('qrcode-link')[0],
+            canvas = document.getElementsByClassName('qrcode')[0],
+            context = canvas.getContext('2d'),
+            anchorImage = new Image(),
+            qrImage = new Image();
 
-            var canvas = document.getElementsByClassName('qrcode')[0],
-            context = canvas.getContext('2d');
-        
-            var anchorImage = new Image();
-            var qrImage = new Image();
             anchorImage.src = 'images/anchortag.png';
 
             var createAnchorTag = function(){
@@ -337,42 +338,32 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
             };
 
             /*Execute the createAnchorTag function every .5s, if tag is generated stop*/
-            var checkIntervalId = setInterval(createAnchorTag, 500);
+            var checkIntervalId = setInterval(createAnchorTag, 500),
+            imageSrc = "";
 
-            /*
-                If the content is text
-            */
+            //If the content is from the canvas
             if($scope.$parent.textContent !== null ){
-                $scope.contentType  = 'text';
-                $scope.contentData  = $scope.$parent.textContent;
-                $scope.sendRequest();
-
-            /*
-                If the content is an image
-            */
+                $scope.contentData  = $scope.$parent.textImage.split(/,(.+)/)[1];
+                imageSrc = $scope.$parent.textImage;
+            // If the content is an image
             }else{
-                /*
-                    Display image preview on page
-                */
-                $scope.$parent.reader = new FileReader();
-
-                $scope.$parent.reader.onload = (function(theFile) {
-                    return function(e){
-                        $scope.contentType = 'image';
-
-                        //remove meta-data up to the first comma.
-                        $scope.contentData  = $scope.$parent.reader.result.split(/,(.+)/)[1];
-
-                        $scope.sendRequest();
-
-                        var span = ['<span>','<img class="image-preview" src="', e.target.result,
-                                            '" title="', escape(theFile.name), '"/>','</span>'].join('');
-                        document.getElementById('imageFinal').innerHTML = span;
-                    };
-                })($scope.$parent.imageContent._file);
-
-                $scope.$parent.reader.readAsDataURL($scope.$parent.imageContent._file);
+                $scope.contentData  = $scope.$parent.reader.result.split(/,(.+)/)[1];
+                imageSrc = $scope.$parent.reader.result;
             }
+
+            // Create new image and span elements
+            var previweImage = new Image(),
+            previewSpan = document.createElement('span');
+
+            // Set attributes of span & image elements, then append to DOM
+            previweImage.class = "image-preview";
+            previweImage.src = imageSrc;
+            previewSpan.appendChild(previweImage);
+            document.getElementById('imageFinal').appendChild(previewSpan);
+
+            // Finish setting scope parameters and send request
+            $scope.contentType  = 'image';
+            $scope.sendRequest();
         }
     });
 });

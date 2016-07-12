@@ -87,20 +87,22 @@
                 <textarea ng-model="textValue" ng-blur="setText(textValue)" class="form-control input-lg" name="inputlg" col="2" rows="3"></textarea>
             </div>
             <hr>
-            <div class="pull-left" ng-init="contentSize=2">
-                <div>
-                    <h4>
-                        <b>Augmented Text Size:</b>
-                    </h4>
-                </div>
-                <div class="checkbox-inline">
-                    <label><input type="radio" ng-model="contentSize" value="1">Small</label>
-                </div>
-                <div class="checkbox-inline">
-                    <label><input type="radio" ng-model="contentSize" value="2">Medium</label>
-                </div>
-                <div class="checkbox-inline disabled">
-                    <label><input type="radio" ng-model="contentSize" value="4">Large</label>
+            <div class="row">
+                <div class="pull-left" ng-init="contentSize=2">
+                    <div>
+                        <h4>
+                            <b>Augmented Text Size:</b>
+                        </h4>
+                    </div>
+                    <div class="checkbox-inline">
+                        <label><input type="radio" ng-model="contentSize" value="1">Small</label>
+                    </div>
+                    <div class="checkbox-inline">
+                        <label><input type="radio" ng-model="contentSize" value="2">Medium</label>
+                    </div>
+                    <div class="checkbox-inline disabled">
+                        <label><input type="radio" ng-model="contentSize" value="4">Large</label>
+                    </div>
                 </div>
             </div>
             <div class="pull-right">
@@ -108,15 +110,15 @@
                     <h4>
                         <b>Augmented Text Background:</b>
                     </h4>
-                    <color-picker ng-model="$parent.imageColor" options="colorPickerOptions"></color-picker>
+                    <color-picker ng-model="imageColor" api="backgroundColorPickerApi" options="colorPickerOptions"></color-picker>
                 </div>
-
                 <div>
                     <h4>
                         <b>Augmented Text Color:</b>
                     </h4>
-                    <color-picker ng-model="$parent.textColor" options="colorPickerOptions"></color-picker>
+                    <color-picker ng-model="textColor" api="textColorPickerApi" options="colorPickerOptions"></color-picker>
                 </div>
+                <canvas id='textCanvas'></canvas>
             </div>
         </div>
 
@@ -154,7 +156,6 @@
                     <div class="form-group">
                         <label for="inputlg">Text Content</label>
                         <br>
-                        <canvas id='textCanvas' ng-hide="true"></canvas>
                         <img id='image'>
                     </div>
                 </div>
