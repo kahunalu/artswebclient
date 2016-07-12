@@ -103,23 +103,19 @@
                     <label><input type="radio" ng-model="contentSize" value="4">Large</label>
                 </div>
             </div>
-            <div class="pull-right" ng-init="$parent.imageColor=0">
+            <div class="pull-right">
+                <div>
+                    <h4>
+                        <b>Augmented Text Background:</b>
+                    </h4>
+                    <color-picker ng-model="$parent.imageColor" options="colorPickerOptions"></color-picker>
+                </div>
+
                 <div>
                     <h4>
                         <b>Augmented Text Color:</b>
                     </h4>
-                </div>
-                <div class="checkbox-inline">
-                    <label><input type="radio" ng-model="$parent.imageColor" value="#FF0000">Red</label>
-                </div>
-                <div class="checkbox-inline">
-                    <label><input type="radio" ng-model="$parent.imageColor" value="#0000FF">Blue</label>
-                </div>
-                <div class="checkbox-inline disabled">
-                    <label><input type="radio" ng-model="$parent.imageColor" value="#00FF00">Green</label>
-                </div>
-                <div class="checkbox-inline disabled">
-                    <label><input type="radio" ng-model="$parent.imageColor" value="0">Clear</label>
+                    <color-picker ng-model="$parent.textColor" options="colorPickerOptions"></color-picker>
                 </div>
             </div>
         </div>
