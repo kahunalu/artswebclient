@@ -14,6 +14,7 @@ artsWebApp.controller('MainCtrl', function ($scope) {
     $scope.textContent  = null;
     $scope.imageContent = null;
     $scope.key          = null;
+    $scope.contentSize  = null;
 
     $scope.reader       = null;
 
@@ -65,6 +66,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     $scope.imageSelected    = true;
     $scope.textSelected     = false;
     $scope.imageUploaded    = false;
+    $scope.contentSize      = null;
 
     $scope.textValue = null;
 
@@ -100,6 +102,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         $scope.imageUploaded = true;
         $scope.$parent.imageContent = item;
         $scope.$parent.textContent = null;
+        $scope.$parent.contentSize = $scope.contentSize;
 
         $scope.$parent.reader = new FileReader();
 
@@ -146,7 +149,6 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
     $scope.key          = null;
     $scope.contentData  = null;
     $scope.contentType  = null;
-    $scope.contentSize  = null;
 
     /* 
         hacky way of restarting the flow, 
@@ -225,14 +227,14 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
             imageElem.src = textCanvasObj.canvas.toDataURL();           // Show image on confirm page
             
             body = {
-                'contentSize': $scope.contentSize,
                 'contentType': 'image',
                 'contentData': textCanvasObj.canvas.toDataURL().split(/,(.+)/)[1],
+                'contentSize': $scope.$parent.contentSize,
             };
         
         }else{
             body = {
-                'contentSize': $scope.contentSize,
+                'contentSize': $scope.$parent.contentSize,
                 'contentType': 'image',
                 'contentData': $scope.contentData,
             };
