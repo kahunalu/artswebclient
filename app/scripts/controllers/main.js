@@ -15,6 +15,7 @@ artsWebApp.controller('MainCtrl', function ($scope) {
     $scope.imageContent = null;
     $scope.key          = null;
     $scope.contentSize  = null;
+    $scope.imageColor   = null;
 
     $scope.reader       = null;
 
@@ -67,6 +68,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     $scope.textSelected     = false;
     $scope.imageUploaded    = false;
     $scope.contentSize      = null;
+    $scope.imageColor       = null;
 
     $scope.textValue = null;
 
@@ -121,6 +123,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         $scope.incomplete = false;
         $scope.$parent.imageContent = null;
         $scope.$parent.textContent = text;
+        $scope.$parent.contentSize = $scope.contentSize;
         $scope.imageUploaded = false;
         uploader.clearQueue();
     };
@@ -198,7 +201,7 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
         /*
             Create body & url for post request
         */
-        var url = 'http://artsserver.herokuapp.com/content/setContent',
+        var url = 'http://127.0.0.1:5000/content/setContent',
         body;
 
         if($scope.contentType === 'text'){
@@ -214,12 +217,21 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
             textLineLength = textCanvasObj.measureText($scope.contentData).width;
             maxLineLength = (textLineLength > 700) ? 700 : textLineLength; 
 
+
             textContentLines = getLines(textCanvasObj, $scope.contentData, maxLineLength, '50px Arial');
             textCanvasObj.canvas.height = textContentLines.length*50;   // Set canvas height
             textCanvasObj.canvas.width = maxLineLength;                 // Set canvas width
+            
+            //This is the backgroud image color, null->clear
+            if($scope.$parent.imageColor){
+                textCanvasObj.fillStyle = $scope.$parent.imageColor;
+                textCanvasObj.fillRect(0,0, maxLineLength, textContentLines.length*50);
+            }
+            
             textCanvasObj.font = '50px Arial';                          // Need to reset font for some reason
             textCanvasObj.textBaseline = 'hanging';                     // Align text at very top of canvas
             
+            textCanvasObj.fillStyle = '#000000';
             for(i = 0; i < textContentLines.length; i++){               // Make single/multiple lines in canvas
                 textCanvasObj.fillText(textContentLines[i], 0, y + (i*50));
             }
