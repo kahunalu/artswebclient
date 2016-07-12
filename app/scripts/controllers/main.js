@@ -201,7 +201,7 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
         /*
             Create body & url for post request
         */
-        var url = 'http://127.0.0.1:5000/content/setContent',
+        var url = 'http://artsserver.herokuapp.com/content/setContent',
         body;
 
         if($scope.contentType === 'text'){
@@ -230,7 +230,7 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
             
             textCanvasObj.font = '50px Arial';                          // Need to reset font for some reason
             textCanvasObj.textBaseline = 'hanging';                     // Align text at very top of canvas
-            
+
             textCanvasObj.fillStyle = '#000000';
             for(i = 0; i < textContentLines.length; i++){               // Make single/multiple lines in canvas
                 textCanvasObj.fillText(textContentLines[i], 25, 25 + y + (i*50));
