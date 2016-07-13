@@ -90,3 +90,9 @@ body {
 .qr-preview-image {
     width: 250px;
 }
+
+/* Override <hr> default color */
+
+hr {
+    border-top: 1px solid lightgray;
+}
