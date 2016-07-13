@@ -96,7 +96,6 @@ body {
 }
 
 /* Override <hr> default color */
-
 hr {
     border-top: 1px solid lightgray;
 }
