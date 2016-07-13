@@ -129,7 +129,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         if($scope.contentSize === "1"){         // Small Image Case
             return "200px";
         }
-        else if($scope.contentSize === "3"){    // Large Image Case
+        else if($scope.contentSize === "4"){    // Large Image Case
             return "600px";
         }
         else{                                   // Medium / Default Image Case
@@ -185,7 +185,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         if($scope.contentSize === "1"){         // Small Text Case
             return 12;
         }
-        else if($scope.contentSize === "3"){    // Large Text Case
+        else if($scope.contentSize === "4"){    // Large Text Case
             return 50;
         }
         else{                                   // Medium / Default Text Case
@@ -258,7 +258,7 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
         if($scope.$parent.contentSize === "1"){         // Small Image Case
             return "200px";
         }
-        else if($scope.$parent.contentSize === "3"){    // Large Image Case
+        else if($scope.$parent.contentSize === "4"){    // Large Image Case
             return "600px";
         }
         else{                                           // Medium / Default Image Case
