@@ -126,15 +126,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     };
 
     function getImageHeight(){
-        if($scope.contentSize === "1"){         // Small Image Case
-            return "200px";
-        }
-        else if($scope.contentSize === "4"){    // Large Image Case
-            return "600px";
-        }
-        else{                                   // Medium / Default Image Case
-            return "400px";
-        }
+        return (200 * $scope.contentSize) + "px";
     };
 
     $scope.setText = function(text){
@@ -182,15 +174,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     }; 
 
     function getFontHeight(){
-        if($scope.contentSize === "1"){         // Small Text Case
-            return 12;
-        }
-        else if($scope.contentSize === "4"){    // Large Text Case
-            return 50;
-        }
-        else{                                   // Medium / Default Text Case
-            return 25;
-        }
+        return 12 * $scope.contentSize;
     };
 
     /**
@@ -255,15 +239,7 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
     };
 
     function getImageHeight(){
-        if($scope.$parent.contentSize === "1"){         // Small Image Case
-            return "200px";
-        }
-        else if($scope.$parent.contentSize === "4"){    // Large Image Case
-            return "600px";
-        }
-        else{                                           // Medium / Default Image Case
-            return "400px";
-        }
+        return (200 * $scope.$parent.contentSize) + "px";
     };
 
     $scope.sendRequest = function(){
