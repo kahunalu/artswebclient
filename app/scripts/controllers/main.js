@@ -156,30 +156,42 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         textContentLines,
         textLineLength = 0,
         maxLineLength = 0,
+        fontStyle = getFontStyle(),
         i = 0,
         y = 0;
 
-        textCanvasObj.font = '50px Arial';                          // Set font before measureText to get accurate spacing
+        textCanvasObj.font = fontStyle;                          // Set font before measureText to get accurate spacing
         textLineLength = textCanvasObj.measureText(text).width;
-        maxLineLength = (textLineLength > 700) ? 700 : textLineLength; 
+        maxLineLength = (textLineLength > 600) ? 600 : textLineLength; 
 
 
-        textContentLines = getLines(textCanvasObj, text, maxLineLength, '50px Arial');
+        textContentLines = getLines(textCanvasObj, text, maxLineLength, fontStyle);
         textCanvasObj.canvas.height = 50+(textContentLines.length*50); // Set canvas height
         textCanvasObj.canvas.width = 50+maxLineLength;                 // Set canvas width
             
         //This is the backgroud image color, null->clear
         textCanvasObj.fillStyle = $scope.imageColor;      
-        textCanvasObj.fillRect(0,0, maxLineLength+50, 50+(textContentLines.length*50));
-        textCanvasObj.font = '50px Arial';                          // Need to reset font for some reason
+        textCanvasObj.fillRect(0,0, maxLineLength+50, 50+(textContentLines.length*50));                         // Need to reset font for some reason
         textCanvasObj.textBaseline = 'hanging';                     // Align text at very top of canvas
         textCanvasObj.fillStyle = $scope.textColor;         // Filling text color from picker
-
+        textCanvasObj.font = fontStyle; 
         for(i = 0; i < textContentLines.length; i++){               // Make single/multiple lines in canvas
             textCanvasObj.fillText(textContentLines[i], 25, 25 + y + (i*50));
         }
         $scope.$parent.textImage = textCanvasObj.canvas.toDataURL();
     }; 
+
+    function getFontStyle(){
+        if($scope.contentSize === "1"){         // Small Text Case
+            return "12px Arial";
+        }
+        else if($scope.contentSize === "3"){    // Large Text Case
+            return "50px Arial";
+        }
+        else{                                   // Medium / Default Text Case
+            return "25px Arial";
+        }
+    };
 
     /**
     * Divide an entire phrase in an array of phrases
@@ -215,7 +227,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
             }
         }
         return phraseArray;
-    }
+    };
 
     $scope.resetValues = function(){
         $scope.incomplete       = true;

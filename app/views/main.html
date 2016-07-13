@@ -81,44 +81,52 @@
             </div>
         </div>
 
-        <div class="contentDZ jumbotron row" ng-show="textSelected">
+        <div class="contentDZ well jumbotron row" ng-show="textSelected">
             <div class="form-group">
                 <label for="inputlg">Text Content</label>
-                <textarea ng-model="textValue" ng-blur="setText(textValue)" class="form-control input-lg" name="inputlg" col="2" rows="3"></textarea>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="pull-left" ng-init="contentSize=2">
-                    <div>
-                        <h4>
-                            <b>Augmented Text Size:</b>
-                        </h4>
+                <textarea ng-model="textValue" ng-keyup="setText(textValue)" class="form-control input-lg" name="inputlg" col="2" rows="6"></textarea>
+                <hr> 
+                <div class="row" ng-init="contentSize=2">
+                    <div class="col-md-4">
+                        <div>
+                            <h4>
+                                <b>Augmented Text Size:</b>
+                            </h4>
+                        </div>
+                        <div class="checkbox-inline">
+                            <label><input type="radio" ng-click="drawCanvas()" ng-model="contentSize" value="1">Small</label>
+                        </div>
+                        <div class="checkbox-inline">
+                            <label><input type="radio" ng-click="drawCanvas()" ng-model="contentSize" value="2">Medium</label>
+                        </div>
+                        <div class="checkbox-inline disabled">
+                            <label><input type="radio" ng-click="drawCanvas()" ng-model="contentSize" value="3">Large</label>
+                        </div>
                     </div>
-                    <div class="checkbox-inline">
-                        <label><input type="radio" ng-model="contentSize" value="1">Small</label>
+                    <div class="col-md-4">
+                        <div>
+                            <h4>
+                                <b>Augmented Text Background:</b>
+                            </h4>
+                            <color-picker ng-model="imageColor" api="backgroundColorPickerApi" options="colorPickerOptions"></color-picker>
+                        </div>
                     </div>
-                    <div class="checkbox-inline">
-                        <label><input type="radio" ng-model="contentSize" value="2">Medium</label>
-                    </div>
-                    <div class="checkbox-inline disabled">
-                        <label><input type="radio" ng-model="contentSize" value="4">Large</label>
+                    <div class="col-md-4">
+                        <div>
+                            <h4>
+                                <b>Augmented Text Color:</b>
+                            </h4>
+                            <color-picker ng-model="textColor" api="textColorPickerApi" options="colorPickerOptions"></color-picker>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="pull-right">
-                <div>
-                    <h4>
-                        <b>Augmented Text Background:</b>
+                <hr>
+                <div class="row">  
+                    <h4 align="center">
+                        <b>Preview:</b>
                     </h4>
-                    <color-picker ng-model="imageColor" api="backgroundColorPickerApi" options="colorPickerOptions"></color-picker>
+                    <canvas class="centerBlock" id='textCanvas'></canvas>
                 </div>
-                <div>
-                    <h4>
-                        <b>Augmented Text Color:</b>
-                    </h4>
-                    <color-picker ng-model="textColor" api="textColorPickerApi" options="colorPickerOptions"></color-picker>
-                </div>
-                <canvas id='textCanvas'></canvas>
             </div>
         </div>
 
