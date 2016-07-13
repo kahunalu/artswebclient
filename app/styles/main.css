@@ -54,6 +54,10 @@ body {
     margin-bottom:40px;
  }
 
+ .centerImage{
+    text-align: center;
+ }
+
  .centerHeader {
     text-align: center;
  }
