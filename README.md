@@ -32,3 +32,11 @@ Running `grunt test` will run the unit tests with karma.
 
 This is the project structure and explaination:
 http://yeoman.io/codelab/review-generated-files.html
+
+## To update favicon
+add this to line 9 in index.html
+<link rel="icon" href="http://localhost:9000/#/favicon.ico?v=2" />
+then change it back to 
+<link rel="icon" href="favicon.ico" />
+once you see the icon change
+
