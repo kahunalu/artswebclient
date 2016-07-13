@@ -11,19 +11,6 @@
         </div>
     </div>
 
-    <div class="createPage row" ng-controller="contextState" ng-show="contextState" >
-        <div class="col-md-4">
-            <button type="button" ng-click="switchState()" class="btn btn-default">
-                Done
-            </button>
-        </div>
-        <div class="col-md-8">
-            <p>
-                {{test}}
-            </p>
-        </div>
-    </div>
-
     <div class="createPage row" ng-controller="contentState" ng-show="contentState" nv-file-drop="" uploader="uploader">
         <div class="pageTitle row">
             <h1>
@@ -46,7 +33,7 @@
             </div>
         </div>
 
-        <div class="contentDZ well row" ng-show="imageSelected">
+        <div class="contentDZ well jumbotron row" ng-show="imageSelected">
             <div ng-show="uploader.isHTML5 && !imageUploaded" class="well drop-zone" nv-file-over="" uploader="uploader">
                 <h3 style="text-align: center;">
                     Drag and drop file here
@@ -56,27 +43,31 @@
                 <h3>Select file from your computer</h3>
                 <input type="file" nv-file-select="" uploader="uploader" />
             </div>
-            <div class="col-md-2" ng-show="imageUploaded">
-            </div>
-            <div id="imagePreview" class="col-md-8" ng-show="imageUploaded">
-            </div>
-            <div class="col-md-2" ng-show="imageUploaded">
+            <div class="row">
+                <div id="imagePreview" class="centerImage" ng-show="imageUploaded">
+                    <h4 align="center">
+                        <b>Preview:</b>
+                    </h4>
+                    <span>
+                        <image id="imagePreviewElement">
+                    </span>
+                </div>
             </div>
             <hr>
-            <div class="pull-left" ng-init="contentSize=2">
-                <div>
+            <div class="row" ng-init="contentSize=2">
+                <div class="col-md-12">
                     <h4>
                         <b>Augmented Image Size:</b>
                     </h4>
                 </div>
                 <div class="checkbox-inline">
-                    <label><input type="radio" ng-model="contentSize" value="1">Small</label>
+                    <label><input type="radio" ng-click="setImageHeight()" ng-model="contentSize" value="1">Small</label>
                 </div>
                 <div class="checkbox-inline">
-                    <label><input type="radio" ng-model="contentSize" value="2">Medium</label>
+                    <label><input type="radio" ng-click="setImageHeight()" ng-model="contentSize" value="2">Medium</label>
                 </div>
                 <div class="checkbox-inline disabled">
-                    <label><input type="radio" ng-model="contentSize" value="4">Large</label>
+                    <label><input type="radio" ng-click="setImageHeight()" ng-model="contentSize" value="4">Large</label>
                 </div>
             </div>
         </div>
@@ -100,7 +91,7 @@
                             <label><input type="radio" ng-click="drawCanvas()" ng-model="contentSize" value="2">Medium</label>
                         </div>
                         <div class="checkbox-inline disabled">
-                            <label><input type="radio" ng-click="drawCanvas()" ng-model="contentSize" value="3">Large</label>
+                            <label><input type="radio" ng-click="drawCanvas()" ng-model="contentSize" value="4">Large</label>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -138,19 +129,6 @@
         </div>
     </div>
 
-    <div class="createPage row" ng-controller="adjustState" ng-show="adjustState">
-        <div class="col-md-4">
-            <button type="button" ng-click="switchState()" class="btn btn-default">
-                Done
-            </button>
-        </div>
-        <div class="col-md-8">
-            <p>
-                {{test}}
-            </p>
-        </div>
-    </div>
-
     <div class="createPage row" ng-controller="confirmState" ng-show="confirmState">
         <div class="pageTitle row">
             <h1>
@@ -168,6 +146,9 @@
                     </div>
                 </div>
                 <div id="imageFinal" ng-show='contentType == "image"'>
+                    <span>
+                        <image id="imageFinalElement">
+                    </span>
                 </div>
             </div>
             <div class="col-md-4">
