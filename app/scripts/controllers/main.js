@@ -15,7 +15,7 @@ artsWebApp.controller('MainCtrl', function ($scope) {
     $scope.imageContent = null;
     $scope.key          = null;
     $scope.contentSize  = null;
-    $scope.imageColor   = '#00000000';
+    $scope.imageColor   = '#FFFFFFBF';
     $scope.textColor    = '#000000FF';
 
     $scope.reader       = null;
