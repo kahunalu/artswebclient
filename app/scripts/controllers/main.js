@@ -283,51 +283,47 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
             anchorImage.src = 'images/anchortag.png';
 
             var createAnchorTag = function(){
-                // Get the current qrImage data
-                qrImage.src = downloadlink.getAttribute('href');
-
                 // Check if the qrimage has null in it and return if so
-                var patt = /null/g;
-                if(patt.test(qrImage.src)){
-                    return;
+                if(downloadlink.getAttribute('href')){
+
+                    qrImage.src = downloadlink.getAttribute('href');
+                    // Turn off the loading flag
+                    $scope.$apply(function(){
+                        $scope.loading = false;
+                    });
+
+                    // If the qrimage is not null clear interval check and process image
+                    clearInterval(checkIntervalId);
+
+                    // Increase Previous Canvas size to accomodate new anchor tag 
+                    canvas.width += 50;
+                    canvas.height += 375;
+
+                    // Create a background, and border
+                    context.fillStyle = '#FFFFFF';
+                    context.fillRect(0,0,350,675);
+                    context.lineWidth = 5;
+                    context.strokeStyle='#000000';
+                    context.strokeRect(0, 0, 350, 675);
+
+                    // Draw the qrImage first then the anchorImage
+                    context.drawImage(qrImage, 25, 25);
+                    context.drawImage(anchorImage, 25, 350);
+
+                    // Create elements on the DOM for the preview and link
+                    var link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'anchorTag.png';
+
+                    var preview = document.createElement('img');
+                    preview.src = canvas.toDataURL('image/png');
+                    preview.className = 'qr-preview-image';
+
+                    var anchortaglink = document.getElementById('anchorTagLink');
+
+                    link.appendChild(preview);
+                    anchortaglink.appendChild(link);   
                 }
-
-                // If the qrimage is not null clear interval check and process image
-                clearInterval(checkIntervalId);
-
-                // Increase Previous Canvas size to accomodate new anchor tag 
-                canvas.width += 50;
-                canvas.height += 375;
-
-                // Create a background, and border
-                context.fillStyle = '#FFFFFF';
-                context.fillRect(0,0,350,675);
-                context.lineWidth = 5;
-                context.strokeStyle='#000000';
-                context.strokeRect(0, 0, 350, 675);
-
-                // Draw the qrImage first then the anchorImage
-                context.drawImage(qrImage, 25, 25);
-                context.drawImage(anchorImage, 25, 350);
-                
-                // Create elements on the DOM for the preview and link
-                var link = document.createElement('a');
-                link.href = canvas.toDataURL('image/png');
-                link.download = 'anchorTag.png';
-
-                var preview = document.createElement('img');
-                preview.src = canvas.toDataURL('image/png');
-                preview.className = 'qr-preview-image';
-                
-                var anchortaglink = document.getElementById('anchorTagLink');
-                
-                link.appendChild(preview);
-                anchortaglink.appendChild(link);
-                
-                // Turn off the loading flag
-                $scope.$apply(function(){
-                    $scope.loading = false;
-                });
             };
 
             // Execute the createAnchorTag function every .5s, if tag is generated stop
