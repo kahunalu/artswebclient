@@ -53,6 +53,7 @@
                     </span>
                 </div>
             </div>
+            <small>*Note: Only images less than <strong>1 MB</strong> are allowed.</small>
             <hr>
             <div class="row" ng-init="contentSize=2">
                 <div class="col-md-12">
@@ -75,7 +76,10 @@
         <div class="contentDZ well jumbotron row" ng-show="textSelected">
             <div class="form-group">
                 <label for="inputlg">Text Content</label>
-                <textarea ng-model="textValue" ng-keyup="setText(textValue)" class="form-control input-lg" name="inputlg" col="2" rows="6"></textarea>
+                <textarea ng-model="textValue" ng-keyup="setText(textValue)" ng-maxlength="maxTextLength" class="form-control input-lg" name="inputlg" col="2" rows="6"></textarea>
+                <div>
+                    <span>Characters left: {{maxTextLength - textValue.length}}</span>
+                </div>
                 <hr> 
                 <div class="row" ng-init="contentSize=2">
                     <div class="col-md-4">

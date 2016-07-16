@@ -99,24 +99,30 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     };
 
     $scope.uploader.onAfterAddingFile = function(item) {
-        $scope.incomplete = false;
-        $scope.imageUploaded = true;
-        $scope.$parent.imageContent = item;
-        $scope.$parent.textContent = null;
-        $scope.$parent.contentSize = $scope.contentSize;
-        
-        // Create file reader and get base64 encoding
-        var reader = new FileReader();
-        reader.readAsDataURL(item._file);
+        // Set a 1MB limit
+        if (item._file.size >= 1000000) {
+            alert('You can only upload an image less than 1MB in size.');
+            $scope.uploader.clearQueue();
+        } else {
+            $scope.incomplete = false;
+            $scope.imageUploaded = true;
+            $scope.$parent.imageContent = item;
+            $scope.$parent.textContent = null;
+            $scope.$parent.contentSize = $scope.contentSize;
+            
+            // Create file reader and get base64 encoding
+            var reader = new FileReader();
+            reader.readAsDataURL(item._file);
 
-        // When reader is done reading the file, add contents to DOM
-        reader.onloadend = function(event){
-            var previweImage = document.getElementById('imagePreviewElement'),
-            imageContent = event.target.result;
-            previweImage.src = imageContent;
-            previweImage.style.maxHeight = getImageHeight();
-            $scope.$parent.imageContent = imageContent;
-        };
+            // When reader is done reading the file, add contents to DOM
+            reader.onloadend = function(event){
+                var previewImage = document.getElementById('imagePreviewElement'),
+                imageContent = event.target.result;
+                previewImage.src = imageContent;
+                previewImage.style.maxHeight = getImageHeight();
+                $scope.$parent.imageContent = imageContent;
+            };
+        }
     };
 
     $scope.setImageHeight = function(){
