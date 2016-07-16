@@ -17,6 +17,7 @@ artsWebApp.controller('MainCtrl', function ($scope) {
     $scope.contentSize  = null;
     $scope.imageColor   = '#FFFFFFBF';
     $scope.textColor    = '#000000FF';
+    $scope.maxTextLength = 2500;
 
     $scope.reader       = null;
 
@@ -73,14 +74,14 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     $scope.textColorPickerApi = {
         onChange: function(){
             $scope.drawCanvas();
-        },
-    }
+        }
+    };
 
     $scope.backgroundColorPickerApi = {
         onChange: function(){
             $scope.drawCanvas();
-        },
-    }
+        }
+    };
 
     $scope.uploader = new FileUploader({
         queueLimit: 1
@@ -99,24 +100,30 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     };
 
     $scope.uploader.onAfterAddingFile = function(item) {
-        $scope.incomplete = false;
-        $scope.imageUploaded = true;
-        $scope.$parent.imageContent = item;
-        $scope.$parent.textContent = null;
-        $scope.$parent.contentSize = $scope.contentSize;
-        
-        // Create file reader and get base64 encoding
-        var reader = new FileReader();
-        reader.readAsDataURL(item._file);
+        // Set a 1MB limit
+        if (item._file.size >= 1000000) {
+            window.alert('You can only upload an image less than 1MB in size.');
+            $scope.uploader.clearQueue();
+        } else {
+            $scope.incomplete = false;
+            $scope.imageUploaded = true;
+            $scope.$parent.imageContent = item;
+            $scope.$parent.textContent = null;
+            $scope.$parent.contentSize = $scope.contentSize;
+            
+            // Create file reader and get base64 encoding
+            var reader = new FileReader();
+            reader.readAsDataURL(item._file);
 
-        // When reader is done reading the file, add contents to DOM
-        reader.onloadend = function(event){
-            var previweImage = document.getElementById('imagePreviewElement'),
-            imageContent = event.target.result;
-            previweImage.src = imageContent;
-            previweImage.style.maxHeight = getImageHeight();
-            $scope.$parent.imageContent = imageContent;
-        };
+            // When reader is done reading the file, add contents to DOM
+            reader.onloadend = function(event){
+                var previewImage = document.getElementById('imagePreviewElement'),
+                imageContent = event.target.result;
+                previewImage.src = imageContent;
+                previewImage.style.maxHeight = getImageHeight();
+                $scope.$parent.imageContent = imageContent;
+            };
+        }
     };
 
     $scope.setImageHeight = function(){
@@ -126,8 +133,8 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     };
 
     function getImageHeight(){
-        return (200 * $scope.contentSize) + "px";
-    };
+        return (200 * $scope.contentSize) + 'px';
+    }
 
     $scope.setText = function(text){
         $scope.incomplete           = false;
@@ -145,7 +152,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         textContentLines,
         textLineLength = 0,
         maxLineLength = 0,
-        fontStyle = getFontHeight() + "px Arial",
+        fontStyle = getFontHeight() + 'px Arial',
         i = 0,
         y = 0;
 
@@ -175,7 +182,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
 
     function getFontHeight(){
         return 12 * $scope.contentSize;
-    };
+    }
 
     /**
     * Divide an entire phrase in an array of phrases
@@ -211,7 +218,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
             }
         }
         return phraseArray;
-    };
+    }
 
     $scope.resetValues = function(){
         $scope.incomplete       = true;
@@ -223,7 +230,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     };
 }]);
 
-artsWebApp.controller('createState', function ($scope) {});
+artsWebApp.controller('createState', function () {});
 
 artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
 
@@ -239,8 +246,8 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
     };
 
     function getImageHeight(){
-        return (200 * $scope.$parent.contentSize) + "px";
-    };
+        return (200 * $scope.$parent.contentSize) + 'px';
+    }
 
     $scope.sendRequest = function(){
         
@@ -276,56 +283,52 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
             anchorImage.src = 'images/anchortag.png';
 
             var createAnchorTag = function(){
-                // Get the current qrImage data
-                qrImage.src = downloadlink.getAttribute('href');
-
                 // Check if the qrimage has null in it and return if so
-                var patt = /null/g;
-                if(patt.test(qrImage.src)){
-                    return;
+                if(downloadlink.getAttribute('href')){
+
+                    qrImage.src = downloadlink.getAttribute('href');
+                    // Turn off the loading flag
+                    $scope.$apply(function(){
+                        $scope.loading = false;
+                    });
+
+                    // If the qrimage is not null clear interval check and process image
+                    clearInterval(checkIntervalId);
+
+                    // Increase Previous Canvas size to accomodate new anchor tag 
+                    canvas.width += 50;
+                    canvas.height += 375;
+
+                    // Create a background, and border
+                    context.fillStyle = '#FFFFFF';
+                    context.fillRect(0,0,350,675);
+                    context.lineWidth = 5;
+                    context.strokeStyle='#000000';
+                    context.strokeRect(0, 0, 350, 675);
+
+                    // Draw the qrImage first then the anchorImage
+                    context.drawImage(qrImage, 25, 25);
+                    context.drawImage(anchorImage, 25, 350);
+
+                    // Create elements on the DOM for the preview and link
+                    var link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'anchorTag.png';
+
+                    var preview = document.createElement('img');
+                    preview.src = canvas.toDataURL('image/png');
+                    preview.className = 'qr-preview-image';
+
+                    var anchortaglink = document.getElementById('anchorTagLink');
+
+                    link.appendChild(preview);
+                    anchortaglink.appendChild(link);   
                 }
-
-                // If the qrimage is not null clear interval check and process image
-                clearInterval(checkIntervalId);
-
-                // Increase Previous Canvas size to accomodate new anchor tag 
-                canvas.width += 50;
-                canvas.height += 375;
-
-                // Create a background, and border
-                context.fillStyle = '#FFFFFF';
-                context.fillRect(0,0,350,675);
-                context.lineWidth = 5;
-                context.strokeStyle='#000000';
-                context.strokeRect(0, 0, 350, 675);
-
-                // Draw the qrImage first then the anchorImage
-                context.drawImage(qrImage, 25, 25);
-                context.drawImage(anchorImage, 25, 350);
-                
-                // Create elements on the DOM for the preview and link
-                var link = document.createElement('a');
-                link.href = canvas.toDataURL('image/png');
-                link.download = 'anchorTag.png';
-
-                var preview = document.createElement('img');
-                preview.src = canvas.toDataURL('image/png');
-                preview.className = 'qr-preview-image';
-                
-                var anchortaglink = document.getElementById('anchorTagLink');
-                
-                link.appendChild(preview);
-                anchortaglink.appendChild(link);
-                
-                // Turn off the loading flag
-                $scope.$apply(function(){
-                    $scope.loading = false;
-                });
             };
 
             // Execute the createAnchorTag function every .5s, if tag is generated stop
             var checkIntervalId = setInterval(createAnchorTag, 500),
-            imageSrc = "";
+            imageSrc = '';
 
             // If the content is from the canvas
             if($scope.$parent.textContent !== null ){
