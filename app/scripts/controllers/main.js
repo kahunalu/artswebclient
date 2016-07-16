@@ -74,14 +74,14 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     $scope.textColorPickerApi = {
         onChange: function(){
             $scope.drawCanvas();
-        },
-    }
+        }
+    };
 
     $scope.backgroundColorPickerApi = {
         onChange: function(){
             $scope.drawCanvas();
-        },
-    }
+        }
+    };
 
     $scope.uploader = new FileUploader({
         queueLimit: 1
@@ -102,7 +102,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     $scope.uploader.onAfterAddingFile = function(item) {
         // Set a 1MB limit
         if (item._file.size >= 1000000) {
-            alert('You can only upload an image less than 1MB in size.');
+            window.alert('You can only upload an image less than 1MB in size.');
             $scope.uploader.clearQueue();
         } else {
             $scope.incomplete = false;
@@ -133,8 +133,8 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     };
 
     function getImageHeight(){
-        return (200 * $scope.contentSize) + "px";
-    };
+        return (200 * $scope.contentSize) + 'px';
+    }
 
     $scope.setText = function(text){
         $scope.incomplete           = false;
@@ -152,7 +152,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
         textContentLines,
         textLineLength = 0,
         maxLineLength = 0,
-        fontStyle = getFontHeight() + "px Arial",
+        fontStyle = getFontHeight() + 'px Arial',
         i = 0,
         y = 0;
 
@@ -182,7 +182,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
 
     function getFontHeight(){
         return 12 * $scope.contentSize;
-    };
+    }
 
     /**
     * Divide an entire phrase in an array of phrases
@@ -218,7 +218,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
             }
         }
         return phraseArray;
-    };
+    }
 
     $scope.resetValues = function(){
         $scope.incomplete       = true;
@@ -230,7 +230,7 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
     };
 }]);
 
-artsWebApp.controller('createState', function ($scope) {});
+artsWebApp.controller('createState', function () {});
 
 artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
 
@@ -246,8 +246,8 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
     };
 
     function getImageHeight(){
-        return (200 * $scope.$parent.contentSize) + "px";
-    };
+        return (200 * $scope.$parent.contentSize) + 'px';
+    }
 
     $scope.sendRequest = function(){
         
@@ -332,7 +332,7 @@ artsWebApp.controller('confirmState', function ($scope, $location, dataFactory){
 
             // Execute the createAnchorTag function every .5s, if tag is generated stop
             var checkIntervalId = setInterval(createAnchorTag, 500),
-            imageSrc = "";
+            imageSrc = '';
 
             // If the content is from the canvas
             if($scope.$parent.textContent !== null ){
