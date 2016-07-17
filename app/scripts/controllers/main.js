@@ -222,8 +222,6 @@ artsWebApp.controller('contentState', ['$scope', 'FileUploader', function($scope
 
     $scope.resetValues = function(){
         $scope.incomplete       = true;
-        $scope.imageSelected    = true;
-        $scope.textSelected     = false;
         $scope.imageUploaded    = false;
         $scope.textValue        = null;
         $scope.uploader.clearQueue();
