@@ -7,6 +7,12 @@
 
 body {
     padding: 0;
+    background-image: url("../images/background.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center; 
+
 }
 
 /* Custom page header */
@@ -27,7 +33,10 @@ body {
 .footer {
     padding-top: 19px;
     color: #777;
-    border-top: 1px solid #e5e5e5;
+}
+
+.startButton{
+    margin-top:300px;
 }
 
 .qrcode {
@@ -45,6 +54,11 @@ body {
 
 .pageTitle{
     text-align: center;
+    font-family: 'Satisfy', cursive;
+    font-weight: 700 !important;
+    font-size: 52px;
+    color: white;
+    text-shadow: -4px 6px black;
 }
 
 .centerBlock {
@@ -60,6 +74,11 @@ body {
 
  .centerHeader {
     text-align: center;
+    font-size: 52px;
+    font-weight: 700;
+    font-family: 'Satisfy', cursive;
+    color: white;
+    text-shadow: -4px 6px black;
  }
 
 .shrinkImage{
