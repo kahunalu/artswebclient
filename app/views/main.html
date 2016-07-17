@@ -2,22 +2,19 @@
     <div class="createPage row" ng-controller="createState" ng-show="createState">
         <div>
             <h1 class="centerHeader"> Augmented Reality Tagging System </h1>
-            <img class="centerBlock" src="/images/logo.png">
         </div>
-        <div class="row text-center">
-            <button type="button" ng-click="switchState()" class="btn btn-success">
-                Create Tag
+        <div class="row text-center startButton">
+            <button type="button" ng-click="switchState()" class="btn btn-lg btn-success">
+                Create Anchor Tag
             </button>
         </div>
     </div>
 
     <div class="createPage row" ng-controller="contentState" ng-show="contentState" nv-file-drop="" uploader="uploader">
         <div class="pageTitle row">
-            <h1>
                 Upload Your Content <span class="glyphicon glyphicon-sunglasses"></span>
-            <h1>
         </div>
-
+        <br>
         <div class="row">
             <div class="btn-group btn-group-justified" role="group">
                 <div class="btn-group" role="group">
@@ -115,8 +112,8 @@
                         </div>
                     </div>
                 </div>
-                <hr>
-                <div class="row">  
+                <hr ng-show="textValue">
+                <div class="row" ng-show="textValue">  
                     <h4 align="center">
                         <b>Preview:</b>
                     </h4>
@@ -126,7 +123,7 @@
         </div>
 
         <div class="nextButton row">
-            <button type="button" class="btn btn-success pull-right" ng-click="switchState(); resetValues()" 
+            <button type="button" class="btn btn-success btn-lg pull-right" ng-click="switchState(); resetValues()" 
             ng-disabled="(textSelected && !textValue)||(imageSelected && !imageUploaded)">
                 Finish <span class="glyphicon glyphicon-chevron-right"></span>
             </button>
@@ -135,11 +132,9 @@
 
     <div class="createPage row" ng-controller="confirmState" ng-show="confirmState">
         <div class="pageTitle row">
-            <h1>
-                Download Your Tag <span class="glyphicon glyphicon-flash"></span>
-            <h1>
+            Download Your Tag <span class="glyphicon glyphicon-flash"></span>
         </div>
-
+        <br>
         <div class="jumbotron row">
             <div class="contentPreview col-md-8">
                 <div ng-show='contentType == "text"'>
@@ -169,7 +164,7 @@
         </div>
 
         <div class="nextButton row">
-            <button type="button" class="btn btn-default pull-right" ng-click="restartFlow()" ng-disabled="">
+            <button type="button" class="btn btn-default btn-lg pull-right" ng-click="restartFlow()" ng-disabled="">
                 Create Another <span class="glyphicon glyphicon-chevron-right"></span>
             </button>
         </div>
