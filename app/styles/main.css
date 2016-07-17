@@ -35,8 +35,11 @@ body {
     color: #777;
 }
 
-.startButton{
-    margin-top:300px;
+.startButton {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    margin: -23px 0 0 -92px;
 }
 
 .qrcode {
