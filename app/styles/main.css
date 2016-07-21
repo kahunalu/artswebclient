@@ -42,6 +42,17 @@ body {
     margin: -23px 0 0 -92px;
 }
 
+.play-link{
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    margin: -12px 0 0 -101px;
+}
+
+.play-link *{
+    width:200px;
+}
+
 .qrcode {
     width: 250px;
 }
